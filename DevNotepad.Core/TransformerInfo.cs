@@ -1,0 +1,45 @@
+﻿using System;
+using System.Reflection;
+using DevNotepad.Core.TextTransformers;
+using Type = System.Type;
+
+namespace DevNotepad.Core
+{
+    public class TransformerInfo
+    {
+        private readonly MemberInfo memberInfo;
+
+        public TransformerInfo(Guid id, string caption, MemberInfo memberInfo)
+        {
+            this.memberInfo = memberInfo;
+            Id = id;
+            Caption = caption;
+        }
+
+        public Guid Id { get; }
+        public string Caption { get; }
+
+        public ITextTransformer Build()
+        {
+            var result = memberInfo switch
+            {
+                Type type => BuildByCtor(type),
+                MethodInfo methodInfo => BuildByMethod(methodInfo),
+                _ => throw new Exception("Unsupported member info")
+            };
+
+            result.Caption = Caption;
+            return result;
+        }
+
+        private static ITextTransformer BuildByCtor(Type type)
+        {
+            return (ITextTransformer)Activator.CreateInstance(type);
+        }
+
+        private ITextTransformer BuildByMethod(MethodInfo methodInfo)
+        {
+            return (ITextTransformer)methodInfo.Invoke(null, Array.Empty<object>());
+        }
+    }
+}

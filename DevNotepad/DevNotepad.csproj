@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationIcon>Icons\icon32.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="Icons\icon32.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Svg" Version="3.4.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DevNotepad.Core\DevNotepad.Core.csproj" />
+    <ProjectReference Include="..\Framework\Framework.Domain\Framework.Domain.csproj" />
+    <ProjectReference Include="..\Framework\Framework\Framework.csproj" />
+    <ProjectReference Include="..\Framework\Framework.UI\Framework.UI.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Controls\PipeControl\PipeControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Icons\compose.svg" />
+    <EmbeddedResource Include="Icons\gear.svg" />
+  </ItemGroup>
+
+</Project>
