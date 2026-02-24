@@ -57,7 +57,7 @@ public class c_MainWindow : MVC_Controller<m_MainWindow, v_MainWindow>
         {
             mWorkArea.Pipe.AddItem(new VM_PipeItem(new DistinctTransformer()));
             mWorkArea.Pipe.AddItem(new VM_PipeItem(new SortTransformer()));
-            mWorkArea.Pipe.AddItem(new VM_PipeItem(new DoubleQuotesTextTransformer()));
+            mWorkArea.Pipe.AddItem(new VM_PipeItem(new QuotesTextTransformer('"')));
         }
         finally
         {
