@@ -23,8 +23,9 @@ namespace DevNotepad.Core.TextTransformers
         [TextTransformer("Take After", "ed5639df-6c54-4c01-bc96-60ef84d9e94e")]
         private static ITextTransformer BuildTakeAfter() => new SubstringTransformer(string.Empty, SubstringType.TakeAfter);
 
-        [TextTransformer("File names for review2", "ab9af1c7-2355-4d58-8f2b-8fdf9b0114cd")]
-        private static ITextTransformer BuildFileNamesForReview() => new SubstringTransformer(@"\dev\", SubstringType.TakeAfter);
+        [TextTransformer("File names for review", "ab9af1c7-2355-4d58-8f2b-8fdf9b0114cd")]
+        private static ITextTransformer BuildFileNamesForReview() =>
+            new SubstringTransformer(@"\dev\", SubstringType.TakeAfter) { DontEditNew = true };
 
         public SubstringTransformer()
             : this(string.Empty, SubstringType.TakeStart)
@@ -40,6 +41,8 @@ namespace DevNotepad.Core.TextTransformers
         public string Limit { get; set; }
 
         public SubstringType Type { get; set; }
+
+        public bool DontEditNew { get; private set; }
 
         protected override string TransformLine(string line)
         {

@@ -190,7 +190,7 @@ public class m_WorkArea : MVC_Model, ITransformerEditSession
         {
             // Если в диалоге нажали кнопку Отмена, то откатываем сделанные в диалоге изменения.
             eventRaiser.Raise(() => { parametrizedTransformer.RestoreState(state); });
-        });
+        }, false);
     }
 
     private void DeconstructSelectedItem(VM_PipeItem selectedItem)
@@ -229,12 +229,13 @@ public class m_WorkArea : MVC_Model, ITransformerEditSession
                 Pipe.RemoveItem(newPipeItem.Id);
                 PipeIndex = restorePipeIndex;
             });
-        });
+        }, true);
     }
 
-    private void EditItemIfNeed(VM_PipeItem newPipeItem, Action restore)
+    private void EditItemIfNeed(VM_PipeItem newPipeItem, Action restore, bool isNew)
     {
-        if (newPipeItem.Transformer is not IParametrizedTextTransformer parmetrizedTransformer)
+        if (newPipeItem.Transformer is not IParametrizedTextTransformer parmetrizedTransformer ||
+            isNew && parmetrizedTransformer.DontEditNew)
         {
             return;
         }
