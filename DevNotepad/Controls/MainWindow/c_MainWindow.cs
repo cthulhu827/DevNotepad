@@ -97,8 +97,30 @@ public class c_MainWindow : MVC_Controller<m_MainWindow, v_MainWindow>
         }
         else if (e is { KeyCode: Keys.N, Control: true })
         {
-            cPage.Model.AddWorkArea();
+            var model = CopyModel(active?.Model, e.Shift, e.Alt);
+            cPage.Model.AddWorkArea(model);
         }
+    }
+
+    private static m_WorkArea? CopyModel(m_WorkArea? modelToCopy, bool copyPipe, bool copySource)
+    {
+        if (modelToCopy == null || (!copyPipe && !copySource)) return null;
+
+        var result = new m_WorkArea();
+
+        if (copyPipe)
+            foreach (var vm in modelToCopy.Pipe.Items)
+            {
+                result.Pipe.AddItem(new VM_PipeItem(vm.Transformer.Copy()));
+            }
+
+        if (copySource)
+        {
+            result.Source = new string[modelToCopy.Source.Length];
+            modelToCopy.Source.CopyTo(result.Source, 0);
+        }
+
+        return result;
     }
 
     private void AddTransformer()

@@ -28,7 +28,7 @@ namespace DevNotepad.Core
                 _ => throw new Exception("Unsupported member info")
             };
 
-            result.Caption = Caption;
+            result.Init(Id, Caption);
             return result;
         }
 
@@ -37,7 +37,7 @@ namespace DevNotepad.Core
             return (ITextTransformer)Activator.CreateInstance(type);
         }
 
-        private ITextTransformer BuildByMethod(MethodInfo methodInfo)
+        private static ITextTransformer BuildByMethod(MethodInfo methodInfo)
         {
             return (ITextTransformer)methodInfo.Invoke(null, Array.Empty<object>());
         }

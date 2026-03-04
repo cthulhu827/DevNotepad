@@ -1,8 +1,14 @@
-﻿namespace DevNotepad.Core.TextTransformers
+﻿using System;
+
+namespace DevNotepad.Core.TextTransformers
 {
     public interface ITextTransformer
     {
-        string Caption { get; set; }
+        Guid Id { get; }
+        string Caption { get; }
+
+        void Init(Guid id, string caption);
+
         string[] Transform(string[] lines);
     }
 }

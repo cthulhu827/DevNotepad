@@ -41,11 +41,12 @@ namespace DevNotepad.Core.TextTransformers
 
                 var type = transformer.GetType();
                 var attr = type.GetCustomAttribute<TextTransformerAttribute>();
-                transformer.Caption = attr != null
-                    ? attr.Caption
-                    : throw new Exception($"{type.Name} must be marked with " +
-                                          $"{nameof(TextTransformerAttribute)} " +
-                                          $"to be used in {nameof(PipeTransformer)}");
+                if (attr != null)
+                    transformer.Init(attr.Id, attr.Caption);
+                else
+                    throw new Exception($"{type.Name} must be marked with " +
+                                        $"{nameof(TextTransformerAttribute)} " +
+                                        $"to be used in {nameof(PipeTransformer)}");
             }
         }
     }

@@ -42,5 +42,18 @@ namespace DevNotepad.Core
             return All.SingleOrDefault(i => i.Id == id)?.Build()
                    ?? throw new Exception($"{nameof(ITextTransformer)} with id = {id} not found");
         }
+
+        public static ITextTransformer Copy(this ITextTransformer src)
+        {
+            var result = CreateById(src.Id);
+
+            if (src is IParametrizedTextTransformer parametrized)
+            {
+                var state = parametrized.SaveState();
+                ((IParametrizedTextTransformer)result).RestoreState(state);
+            }
+
+            return result;
+        }
     }
 }
