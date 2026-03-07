@@ -1,9 +1,10 @@
 ﻿using DevNotepad.Controls.WorkArea;
+using DevNotepad.Infrastructure;
 using Framework.MVC;
 
 namespace DevNotepad.Controls.Page;
 
-public class c_Page : MVC_Controller<m_Page, v_Page>
+public class c_Page : MVC_Controller<m_Page, v_Page>, IKeyHandler
 {
     public readonly IList<c_WorkArea> workAreas = new List<c_WorkArea>();
 
@@ -12,11 +13,6 @@ public class c_Page : MVC_Controller<m_Page, v_Page>
         base.DoConnectModel();
 
         ApplyModelChanges(null);
-    }
-
-    protected override void DoDisconnectModel()
-    {
-        base.DoDisconnectModel();
     }
 
     protected override void OnModelChanged(int[] changeCodes)
@@ -80,4 +76,53 @@ public class c_Page : MVC_Controller<m_Page, v_Page>
             view.Height = unresizedViewHeight;
         }
     }
+
+    private int GetFocusedWorkAreaIdx()
+    {
+        for (int i = 0; i < workAreas.Count; i++)
+            if (workAreas[i].View.ContainsFocus)
+                return i;
+        return -1;
+    }
+
+    private void FocusWorkArea(int idx, int focusedIdx)
+    {
+        if (idx >= 0 && idx < workAreas.Count && idx != focusedIdx)
+            workAreas[idx].SetFocus();
+    }
+
+    #region IKeyHandler implementation
+
+    public bool HandleKey(KeyEventArgs e)
+    {
+        if (!View.ContainsFocus) return false;
+
+        var result = true;
+        if (e is { KeyCode: Keys.N, Control: true })
+        {
+            var activeWorkArea = workAreas.FirstOrDefault(c => c.View.ContainsFocus);
+            var newModel = activeWorkArea?.ModelNullable?.Copy(e.Shift, e.Alt);
+            Model.AddWorkArea(newModel);
+        }
+        else if (e is { KeyCode: Keys.Down, Control: true })
+        {
+            var focusedIdx = GetFocusedWorkAreaIdx();
+            FocusWorkArea(focusedIdx + 1, focusedIdx);
+        }
+        else if (e is { KeyCode: Keys.Up, Control: true })
+        {
+            var focusedIdx = GetFocusedWorkAreaIdx();
+            FocusWorkArea(focusedIdx - 1, focusedIdx);
+        }
+        else if (e is { KeyCode: >= Keys.NumPad1 and <= Keys.NumPad9, Control: true })
+            FocusWorkArea(e.KeyCode - Keys.NumPad1, GetFocusedWorkAreaIdx());
+        else
+            result = false;
+
+        return result;
+    }
+
+    public IKeyHandler[] NestedKeyHandlers => workAreas.Cast<IKeyHandler>().ToArray();
+
+    #endregion
 }

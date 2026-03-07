@@ -5,6 +5,7 @@ using DevNotepad.Dialogs.TPBase;
 using Framework.AppInfrastructure;
 using Framework.MVC;
 using System.Reflection;
+using DevNotepad.Core;
 
 namespace DevNotepad.Controls.WorkArea;
 
@@ -132,6 +133,27 @@ public class m_WorkArea : MVC_Model, ITransformerEditSession
     {
         Pipe.MessageBus.UnsignObject(this);
         base.StopListeningDomain();
+    }
+
+    public m_WorkArea? Copy(bool copyPipe, bool copySource)
+    {
+        if (!copyPipe && !copySource) return null;
+
+        var result = new m_WorkArea();
+
+        if (copyPipe)
+            foreach (var vm in Pipe.Items)
+            {
+                result.Pipe.AddItem(new VM_PipeItem(vm.Transformer.Copy()));
+            }
+
+        if (copySource)
+        {
+            result.Source = new string[Source.Length];
+            Source.CopyTo(result.Source, 0);
+        }
+
+        return result;
     }
 
     private bool UpdateTransformed()

@@ -1,10 +1,11 @@
 ﻿using DevNotepad.Controls.PipeControl;
 using DevNotepad.Core;
+using DevNotepad.Infrastructure;
 using Framework.MVC;
 
 namespace DevNotepad.Controls.WorkArea;
 
-public class c_WorkArea : MVC_Controller<m_WorkArea, v_WorkArea>
+public class c_WorkArea : MVC_Controller<m_WorkArea, v_WorkArea>, IKeyHandler
 {
     protected override void DoConnectModel()
     {
@@ -92,5 +93,42 @@ public class c_WorkArea : MVC_Controller<m_WorkArea, v_WorkArea>
     private void PipeControl_OnDeleteItem(object? sender, EventArgs e)
     {
         Model.DeleteSelectedItem();
+    }
+
+    private void AddTransformer()
+    {
+        var transformerId = UI.AskTransformer();
+        if (transformerId == null) return;
+
+        var transformer = Domain.CreateById(transformerId.Value);
+        Model.AddItem(transformer);
+    }
+
+    #region IKeyHandler implementation
+
+    public bool HandleKey(KeyEventArgs e)
+    {
+        if (!View.ContainsFocus) return false;
+
+        var result = true;
+        if (e.KeyCode == Keys.F1)
+            View.txtSource.Text = Clipboard.GetText();
+        else if (e.KeyCode == Keys.F2)
+            Clipboard.SetText(View.txtTransformed.Text);
+        else if (e.KeyCode == Keys.F4)
+            View.pipeControl.Edit(View.ActiveControl);
+        if (e.KeyCode == Keys.Insert)
+            AddTransformer();
+        else
+            result = false;
+
+        return result;
+    }
+
+    #endregion
+
+    public void SetFocus()
+    {
+        View.txtSource.Focus();
     }
 }
