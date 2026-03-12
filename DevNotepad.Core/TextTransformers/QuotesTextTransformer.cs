@@ -21,5 +21,10 @@ namespace DevNotepad.Core.TextTransformers
             yield return new TemplateTransformer($"{quote}%line%{quote}");
             yield return new EndWithSuffixTransformer(",", true);
         }
+
+        protected override IEnumerable<ITextTransformer> Init()
+        {
+            yield break;
+        }
     }
 }

@@ -112,7 +112,7 @@ public class c_WorkArea : MVC_Controller<m_WorkArea, v_WorkArea>, IKeyHandler
 
         var result = true;
         if (e.KeyCode == Keys.F1)
-            View.txtSource.Text = Clipboard.GetText();
+            View.txtSource.Text = Clipboard.GetText().TrimEnd();
         else if (e.KeyCode == Keys.F2)
             Clipboard.SetText(View.txtTransformed.Text);
         else if (e.KeyCode == Keys.F4)

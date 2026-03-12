@@ -38,6 +38,11 @@ namespace DevNotepad.Core.TextTransformers
             Type = type;
         }
 
+        public SubstringTransformer(int limit, SubstringType type)
+            : this(limit.ToString(), type)
+        {
+        }
+
         public string Limit { get; set; }
 
         public SubstringType Type { get; set; }

@@ -20,6 +20,12 @@ namespace DevNotepad.Core.TextTransformers
             AddCaptionToTransformers();
         }
 
+        protected PipeTransformer()
+        {
+            transformers = Init().ToArray();
+            AddCaptionToTransformers();
+        }
+
         public override string[] Transform(string[] lines)
         {
             var result = lines;
@@ -32,6 +38,8 @@ namespace DevNotepad.Core.TextTransformers
         }
 
         public ITextTransformer[] Components => transformers;
+
+        protected abstract IEnumerable<ITextTransformer> Init();
 
         private void AddCaptionToTransformers()
         {
