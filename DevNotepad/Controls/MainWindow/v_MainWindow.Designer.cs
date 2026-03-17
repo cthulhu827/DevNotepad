@@ -32,6 +32,7 @@
             panel1 = new Panel();
             button1 = new Button();
             v_Page1 = new Page.v_Page();
+            tbPages = new ToolBar.ToolBar();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -57,10 +58,18 @@
             // v_Page1
             // 
             v_Page1.Dock = DockStyle.Fill;
-            v_Page1.Location = new Point(0, 0);
+            v_Page1.Location = new Point(0, 42);
             v_Page1.Name = "v_Page1";
-            v_Page1.Size = new Size(800, 402);
+            v_Page1.Size = new Size(800, 360);
             v_Page1.TabIndex = 0;
+            // 
+            // tbPages
+            // 
+            tbPages.Dock = DockStyle.Top;
+            tbPages.Location = new Point(0, 0);
+            tbPages.Name = "tbPages";
+            tbPages.Size = new Size(800, 42);
+            tbPages.TabIndex = 2;
             // 
             // v_MainWindow
             // 
@@ -68,12 +77,14 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
             Controls.Add(v_Page1);
+            Controls.Add(tbPages);
             Controls.Add(panel1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             KeyPreview = true;
             Name = "v_MainWindow";
             Text = "Developer Notepad";
             WindowState = FormWindowState.Maximized;
+            Load += v_MainWindow_Load;
             panel1.ResumeLayout(false);
             ResumeLayout(false);
         }
@@ -83,5 +94,6 @@
         internal Panel panel1;
         internal Button button1;
         internal Page.v_Page v_Page1;
+        internal ToolBar.ToolBar tbPages;
     }
 }

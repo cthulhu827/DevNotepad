@@ -1,4 +1,5 @@
 ﻿using DevNotepad.Controls.Page;
+using DevNotepad.Controls.ToolBar;
 using DevNotepad.Infrastructure;
 using Framework.MVC;
 
@@ -26,6 +27,8 @@ public class c_MainWindow : MVC_Controller<m_MainWindow, v_MainWindow>
     {
         base.DoConnectModel();
 
+        InitTb();
+
         cPage.Model = new m_Page();
         cPage.Model.AddWorkArea();
 
@@ -39,6 +42,8 @@ public class c_MainWindow : MVC_Controller<m_MainWindow, v_MainWindow>
         View.button1.Click -= Button1_Click;
 
         cPage.ModelNullable = null;
+
+        View.tbPages.DataSource = null;
 
         base.DoDisconnectModel();
     }
@@ -61,5 +66,16 @@ public class c_MainWindow : MVC_Controller<m_MainWindow, v_MainWindow>
         }
 
         return false;
+    }
+
+    private void InitTb()
+    {
+        var dataSource = DataSourceFactory.Create<VM_ToolButton>();
+        dataSource.AddItem(new VM_ToolButton("Page 1"));
+        dataSource.AddItem(new VM_ToolButton("Page 2"));
+        dataSource.AddItem(new VM_ToolButton("Page 3"));
+
+        View.tbPages.DataSource = dataSource;
+        View.tbPages.SelectedIndex = 1;
     }
 }

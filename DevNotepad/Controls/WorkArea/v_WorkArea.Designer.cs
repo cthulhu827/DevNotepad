@@ -13,7 +13,7 @@
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing )
+            if (disposing)
             {
                 if (components != null) components.Dispose();
 
@@ -67,7 +67,7 @@
             pipeControl.Dock = DockStyle.Top;
             pipeControl.Location = new Point(0, 0);
             pipeControl.Name = "pipeControl";
-            pipeControl.Size = new Size(476, 64);
+            pipeControl.Size = new Size(476, 42);
             pipeControl.TabIndex = 2;
             // 
             // lblSource
