@@ -6,11 +6,11 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
-    <ApplicationIcon>Icons\icon32.ico</ApplicationIcon>
+    <ApplicationIcon>Icons\appicon24.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="Icons\icon32.ico" />
+    <Content Include="Icons\appicon24.ico" />
   </ItemGroup>
 
   <ItemGroup>
