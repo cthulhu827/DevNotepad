@@ -6,7 +6,7 @@ namespace DevNotepad.Controls.Page;
 
 public class c_Page : MVC_Controller<m_Page, v_Page>, IKeyHandler
 {
-    public readonly IList<c_WorkArea> workAreas = new List<c_WorkArea>();
+    private readonly IList<c_WorkArea> workAreas = new List<c_WorkArea>();
 
     protected override void DoConnectModel()
     {
@@ -28,7 +28,7 @@ public class c_Page : MVC_Controller<m_Page, v_Page>, IKeyHandler
         {
             if (changes.Contains(p_Page.WorkAreaAdded))
             {
-                // todo: учитывать, что может быть добавлено несколько моделей
+                // todo: учитывать, что может быть добавлено несколько моделей; есть пример в c_MainWindow
                 if (Model.WorkAreas.Any()) AddWorkArea(Model.WorkAreas.Last());
             }
         });
@@ -42,25 +42,26 @@ public class c_Page : MVC_Controller<m_Page, v_Page>, IKeyHandler
             Model = model
         };
         workAreas.Add(controller);
-        AddWorkArea(controller.View);
+        AddWorkArea(controller);
     }
 
-    private void AddWorkArea(v_WorkArea view)
+    private void AddWorkArea(c_WorkArea controller)
     {
         var prevView = workAreas
-            .Select(controller => controller.View)
+            .Select(c => c.View)
             .Reverse()
             .Skip(1)
             .FirstOrDefault();
         if (prevView != null) prevView.Dock = DockStyle.Top;
 
+        var view = controller.View;
         view.Parent = View;
         view.Dock = DockStyle.Fill;
         view.BringToFront();
 
         AdjusthWorkAreas();
 
-        view.txtSource.Focus();
+        controller.SetFocus();
     }
 
     private void AdjusthWorkAreas()
@@ -89,6 +90,11 @@ public class c_Page : MVC_Controller<m_Page, v_Page>, IKeyHandler
     {
         if (idx >= 0 && idx < workAreas.Count && idx != focusedIdx)
             workAreas[idx].SetFocus();
+    }
+
+    public void SetFocus()
+    {
+        workAreas.LastOrDefault()?.SetFocus();
     }
 
     #region IKeyHandler implementation

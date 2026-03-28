@@ -8,4 +8,15 @@ public interface IKeyHandler
     }
 
     IKeyHandler[] NestedKeyHandlers => Array.Empty<IKeyHandler>();
+
+    bool HandleKeyWithNested(KeyEventArgs e)
+    {
+        if (HandleKey(e)) return true;
+        foreach (var nested in NestedKeyHandlers)
+        {
+            if (nested.HandleKeyWithNested(e)) return true;
+        }
+
+        return false;
+    }
 }

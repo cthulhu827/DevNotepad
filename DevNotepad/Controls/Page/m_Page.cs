@@ -12,6 +12,7 @@ public class m_Page : MVC_Model
     public m_Page()
     {
         eventRaiser = new EventRaiser<p_Page>(ApplyChanges);
+        AddWorkArea();
     }
 
     public m_WorkArea[] WorkAreas => workAreas.ToArray();

@@ -1,81 +1,148 @@
 ﻿using DevNotepad.Controls.Page;
-using DevNotepad.Controls.ToolBar;
 using DevNotepad.Infrastructure;
 using Framework.MVC;
 
 namespace DevNotepad.Controls.MainWindow;
 
-public class c_MainWindow : MVC_Controller<m_MainWindow, v_MainWindow>
+public class c_MainWindow : MVC_Controller<m_MainWindow, v_MainWindow>, IKeyHandler
 {
-    private readonly c_Page cPage = new c_Page();
-
-    protected override void DoConnectView()
-    {
-        base.DoConnectView();
-
-        cPage.View = View.v_Page1;
-    }
-
-    protected override void DoDisconnectView()
-    {
-        cPage.ViewNullable = null;
-
-        base.DoDisconnectView();
-    }
+    private c_Page[] pages = Array.Empty<c_Page>();
 
     protected override void DoConnectModel()
     {
         base.DoConnectModel();
 
-        InitTb();
-
-        cPage.Model = new m_Page();
-        cPage.Model.AddWorkArea();
-
         View.KeyDown += View_KeyDown;
+        View.tbPages.OnSelectedIndexChanged += TbPages_OnSelectedIndexChanged;
         View.button1.Click += Button1_Click;
+
+        View.tbPages.DataSource = Model.ToolButtons;
+
+        ApplyModelChanges(null);
     }
 
     protected override void DoDisconnectModel()
     {
-        View.KeyDown -= View_KeyDown;
-        View.button1.Click -= Button1_Click;
-
-        cPage.ModelNullable = null;
-
         View.tbPages.DataSource = null;
 
+        View.KeyDown -= View_KeyDown;
+        View.tbPages.OnSelectedIndexChanged -= TbPages_OnSelectedIndexChanged;
+        View.button1.Click -= Button1_Click;
+
         base.DoDisconnectModel();
+    }
+
+    protected override void OnModelChanged(int[] changeCodes)
+    {
+        ApplyModelChanges(changeCodes.ToEnums<p_MainWindow>());
+    }
+
+    private void ApplyModelChanges(p_MainWindow[]? changes)
+    {
+        changes ??= Enums.Values<p_MainWindow>();
+
+        modelSuppressor.Exec(() =>
+        {
+            if (changes.Contains(p_MainWindow.PageAdded))
+            {
+                UpdatePagesByModel();
+                View.tbPages.Visible = Model.Pages.Length > 1;
+            }
+
+            if (changes.Contains(p_MainWindow.SelectedIndexChanged))
+            {
+                ActivatePage(pages[Model.SelectedIndex]);
+            }
+        });
+    }
+
+    private void UpdatePagesByModel()
+    {
+        // Строим мап "Модель -> Контроллер", чтобы пары в нём шли в том же порядке,
+        // в каком идут в модели. Это позволит учесть в том числе и случаи, когда
+        // новая страница добавлена в середину Model.Pages.
+        var map = Model.Pages.ToDictionary(mPage => mPage, _ => (c_Page?)null);
+
+        // Записываем в мап контроллеры, которые уже созданы ранее.
+        foreach (var cPage in pages)
+        {
+            map[cPage.Model] = cPage;
+        }
+
+        // Таким образом в мапе теперь пустое Value только для добавленных моделей.
+        // Нужно для них создать View и Controller'ы.
+        var modelsToAdd = map
+            .Where(pair => pair.Value == null)
+            .Select(pair => pair.Key)
+            .ToArray();
+        foreach (var mPage in modelsToAdd)
+        {
+            var cPage = new c_Page
+            {
+                View = new v_Page { Visible = false },
+                Model = mPage
+            };
+            map[mPage] = cPage;
+        }
+
+        // Запоминаем новый список контроллеров с учётом добавленных страниц.
+        pages = map.Values.Select(cPage => cPage!).ToArray();
+    }
+
+    private void ActivatePage(c_Page controllerToActivate)
+    {
+        var focused = GetFocusedPage();
+        if (focused != null) focused.View.Visible = false;
+
+        var view = controllerToActivate.View;
+        view.Parent = View;
+        view.Visible = true;
+        view.Dock = DockStyle.Fill;
+        view.BringToFront();
+
+        View.tbPages.SelectedIndex = Model.SelectedIndex;
+
+        controllerToActivate.SetFocus();
+    }
+
+    private c_Page? GetFocusedPage()
+    {
+        return pages.FirstOrDefault(cPage => cPage.View.ContainsFocus);
+    }
+
+    private void View_KeyDown(object? sender, KeyEventArgs e)
+    {
+        ((IKeyHandler)this).HandleKeyWithNested(e);
+    }
+
+    private void TbPages_OnSelectedIndexChanged(object? sender, EventArgs e)
+    {
+        if (modelSuppressor.Suppress) return;
+        Model.SelectedIndex = View.tbPages.SelectedIndex;
     }
 
     private void Button1_Click(object? sender, EventArgs e)
     {
     }
 
-    private void View_KeyDown(object? sender, KeyEventArgs e)
+    #region IKeyHandler implementation
+
+    public bool HandleKey(KeyEventArgs e)
     {
-        HandleKey(cPage, e);
+        if (!View.ContainsFocus) return false;
+
+        var result = true;
+        if (e is { KeyCode: Keys.T, Control: true })
+            Model.AddPage();
+        else if (e is { KeyCode: Keys.Tab, Control: true })
+            Model.NextPage(!e.Shift);
+        else
+            result = false;
+
+        return result;
     }
 
-    private bool HandleKey(IKeyHandler keyHandler, KeyEventArgs e)
-    {
-        if (keyHandler.HandleKey(e)) return true;
-        foreach (var nested in keyHandler.NestedKeyHandlers)
-        {
-            if (HandleKey(nested, e)) return true;
-        }
+    public IKeyHandler[] NestedKeyHandlers => pages.Cast<IKeyHandler>().ToArray();
 
-        return false;
-    }
-
-    private void InitTb()
-    {
-        var dataSource = DataSourceFactory.Create<VM_ToolButton>();
-        dataSource.AddItem(new VM_ToolButton("Page 1"));
-        dataSource.AddItem(new VM_ToolButton("Page 2"));
-        dataSource.AddItem(new VM_ToolButton("Page 3"));
-
-        View.tbPages.DataSource = dataSource;
-        View.tbPages.SelectedIndex = 1;
-    }
+    #endregion
 }

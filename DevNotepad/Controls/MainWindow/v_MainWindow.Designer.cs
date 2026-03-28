@@ -31,7 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(v_MainWindow));
             panel1 = new Panel();
             button1 = new Button();
-            v_Page1 = new Page.v_Page();
             tbPages = new ToolBar.ToolBar();
             panel1.SuspendLayout();
             SuspendLayout();
@@ -55,14 +54,6 @@
             button1.Text = "button1";
             button1.UseVisualStyleBackColor = true;
             // 
-            // v_Page1
-            // 
-            v_Page1.Dock = DockStyle.Fill;
-            v_Page1.Location = new Point(0, 42);
-            v_Page1.Name = "v_Page1";
-            v_Page1.Size = new Size(800, 360);
-            v_Page1.TabIndex = 0;
-            // 
             // tbPages
             // 
             tbPages.Dock = DockStyle.Top;
@@ -76,7 +67,6 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(v_Page1);
             Controls.Add(tbPages);
             Controls.Add(panel1);
             Icon = (Icon)resources.GetObject("$this.Icon");
@@ -93,7 +83,6 @@
 
         internal Panel panel1;
         internal Button button1;
-        internal Page.v_Page v_Page1;
         internal ToolBar.ToolBar tbPages;
     }
 }

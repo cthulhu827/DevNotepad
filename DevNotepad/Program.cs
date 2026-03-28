@@ -14,10 +14,12 @@ namespace DevNotepad
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
 
+            var model = new m_MainWindow();
+            model.AddPage();
             var cMainWindow = new c_MainWindow
             {
                 View = new v_MainWindow(),
-                Model = new m_MainWindow()
+                Model = model
             };
 
             Application.Run(cMainWindow.View);
