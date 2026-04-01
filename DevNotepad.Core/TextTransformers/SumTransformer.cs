@@ -7,10 +7,10 @@ namespace DevNotepad.Core.TextTransformers
     {
         public override string[] Transform(string[] lines)
         {
-            var result = 0;
+            long result = 0;
             foreach (var line in lines)
             {
-                if (int.TryParse(line, out var number))
+                if (long.TryParse(line, out var number))
                     result += number;
                 else
                     return $"Can't parse '{line}'".AsArray();
