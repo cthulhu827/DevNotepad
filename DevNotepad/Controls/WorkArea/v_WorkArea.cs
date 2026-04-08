@@ -25,13 +25,13 @@ namespace DevNotepad.Controls.WorkArea
         protected override void OnPaintBackground(PaintEventArgs e)
         {
             var vertSplitterRect = new Rectangle(txtSource.Width, 0, SplitterWidth, ClientSize.Height);
-            e.Graphics.FillRectangle(UI.BrWorkAreaVertSplitter, vertSplitterRect);
+            e.Graphics.FillRectangle(UI.BrFolderListSel, vertSplitterRect);
 
             if (Resizable)
             {
                 var horzSplitterRect = new Rectangle(0, ClientSize.Height - ResizeFrameHeight,
                     ClientSize.Width, ResizeFrameHeight);
-                e.Graphics.FillRectangle(UI.BrWorkAreaHorzSplitter, horzSplitterRect);
+                e.Graphics.FillRectangle(UI.BrChatBg, horzSplitterRect);
             }
         }
 
@@ -197,24 +197,24 @@ namespace DevNotepad.Controls.WorkArea
 
         private void v_WorkArea_Load(object sender, EventArgs e)
         {
-            pipeControl.BackColor = PipeItemColors.ClrPipeBack;
+            pipeControl.BackColor = UI.ClrFolderListSel;
             pipeControl.Font = UI.Font14;
 
             txtSource.Font = UI.FontMono12;
-            txtSource.BackColor = UI.ClrListBack;
-            txtSource.ForeColor = UI.ClrListFore;
+            txtSource.BackColor = UI.ClrChatBg;
+            txtSource.ForeColor = UI.ClrFont;
 
             txtTransformed.Font = UI.FontMono12;
-            txtTransformed.BackColor = UI.ClrListBack;
-            txtTransformed.ForeColor = UI.ClrListFore;
+            txtTransformed.BackColor = UI.ClrChatBg;
+            txtTransformed.ForeColor = UI.ClrFont;
 
-            lblSource.BackColor = PipeItemColors.ClrPipeBack;
+            lblSource.BackColor = UI.ClrFolderListSel;
             lblSource.Font = UI.Font10;
-            lblSource.ForeColor = UI.ClrListFore;
+            lblSource.ForeColor = UI.ClrFont;
 
-            lblTransformed.BackColor = PipeItemColors.ClrPipeBack;
+            lblTransformed.BackColor = UI.ClrFolderListSel;
             lblTransformed.Font = UI.Font10;
-            lblTransformed.ForeColor = UI.ClrListFore;
+            lblTransformed.ForeColor = UI.ClrFont;
         }
 
         private sealed class CancelByEscHandler : IMessageFilter

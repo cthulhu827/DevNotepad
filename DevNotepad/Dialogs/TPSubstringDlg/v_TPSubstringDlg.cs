@@ -11,34 +11,34 @@ namespace DevNotepad.Dialogs.TPSubstringDlg
 
         private void v_TPSubstringDlg_Load(object sender, EventArgs e)
         {
-            BackColor = UI.ClrBack;
+            BackColor = UI.ClrChatListBg;
 
-            lblLimit.ForeColor = UI.ClrListFore;
+            lblLimit.ForeColor = UI.ClrFont;
             lblLimit.Font = UI.Font14;
 
-            txtLimit.BackColor = UI.ClrListBack;
-            txtLimit.ForeColor = UI.ClrListFore;
+            txtLimit.BackColor = UI.ClrChatBg;
+            txtLimit.ForeColor = UI.ClrFont;
             txtLimit.Font = UI.Font14;
 
-            lblType.ForeColor = UI.ClrListFore;
+            lblType.ForeColor = UI.ClrFont;
             lblType.Font = UI.Font14;
 
-            rbSkipStart.ForeColor = UI.ClrListFore;
+            rbSkipStart.ForeColor = UI.ClrFont;
             rbSkipStart.Font = UI.Font14;
 
-            rbSkipEnd.ForeColor = UI.ClrListFore;
+            rbSkipEnd.ForeColor = UI.ClrFont;
             rbSkipEnd.Font = UI.Font14;
 
-            rbTakeStart.ForeColor = UI.ClrListFore;
+            rbTakeStart.ForeColor = UI.ClrFont;
             rbTakeStart.Font = UI.Font14;
 
-            rbTakeEnd.ForeColor = UI.ClrListFore;
+            rbTakeEnd.ForeColor = UI.ClrFont;
             rbTakeEnd.Font = UI.Font14;
 
-            rbTakeBefore.ForeColor = UI.ClrListFore;
+            rbTakeBefore.ForeColor = UI.ClrFont;
             rbTakeBefore.Font = UI.Font14;
 
-            rbTakeAfter.ForeColor = UI.ClrListFore;
+            rbTakeAfter.ForeColor = UI.ClrFont;
             rbTakeAfter.Font = UI.Font14;
         }
     }

@@ -1,5 +1,3 @@
-using DevNotepad.Controls.PipeControl;
-
 namespace DevNotepad.Controls.MainWindow
 {
     public partial class v_MainWindow : Form
@@ -22,7 +20,7 @@ namespace DevNotepad.Controls.MainWindow
 
         private void v_MainWindow_Load(object sender, EventArgs e)
         {
-            tbPages.BackColor = PipeItemColors.ClrBack;
+            tbPages.BackColor = UI.ClrChatListBg;
             tbPages.Font = UI.Font14;
         }
     }

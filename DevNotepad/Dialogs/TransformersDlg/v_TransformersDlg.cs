@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Framework.UI;
+﻿using Framework.UI;
 
 namespace DevNotepad.Dialogs.TransformersDlg
 {
@@ -34,14 +25,14 @@ namespace DevNotepad.Dialogs.TransformersDlg
 
         private void v_TransformersDlg_Load(object sender, EventArgs e)
         {
-            BackColor = UI.ClrBack;
+            BackColor = UI.ClrChatListBg;
 
-            txtSearch.BackColor = UI.ClrListBack;
-            txtSearch.ForeColor = UI.ClrListFore;
+            txtSearch.BackColor = UI.ClrChatBg;
+            txtSearch.ForeColor = UI.ClrFont;
             txtSearch.Font = UI.Font14;
 
-            lbTransformers.BackColor = UI.ClrListBack;
-            lbTransformers.Font = new Font(lbTransformers.Font.FontFamily, 14);
+            lbTransformers.BackColor = UI.ClrChatListBg;
+            lbTransformers.Font = UI.Font14;
         }
     }
 }

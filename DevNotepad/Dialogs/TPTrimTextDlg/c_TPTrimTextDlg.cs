@@ -1,4 +1,3 @@
-using DevNotepad.Core;
 using DevNotepad.Core.TextTransformers;
 using DevNotepad.Dialogs.TPBase;
 
@@ -46,8 +45,8 @@ public class c_TPTrimTextDlg : c_TPBase<m_TPTrimTextDlg, v_TPTrimTextDlg>
             {
                 View.chkAutoPrefix.Checked = Model.AutoPrefix;
                 View.txtPrefix.ReadOnly = Model.AutoPrefix;
-                View.txtPrefix.ForeColor = Model.AutoPrefix ? UI.ClrEditForeDisabled : UI.ClrListFore;
-                View.txtPrefix.BackColor = Model.AutoPrefix ? UI.ClrBack : UI.ClrEditBack;
+                View.txtPrefix.ForeColor = Model.AutoPrefix ? UI.ClrFolderIcon : UI.ClrFont;
+                View.txtPrefix.BackColor = Model.AutoPrefix ? UI.ClrChatBg : UI.ClrFolderListSel;
 
                 if (!Model.AutoPrefix) View.txtPrefix.Focus();
             }
@@ -59,8 +58,8 @@ public class c_TPTrimTextDlg : c_TPBase<m_TPTrimTextDlg, v_TPTrimTextDlg>
             {
                 View.chkAutoSuffix.Checked = Model.AutoSuffix;
                 View.txtSuffix.ReadOnly = Model.AutoSuffix;
-                View.txtSuffix.ForeColor = Model.AutoSuffix ? UI.ClrEditForeDisabled : UI.ClrListFore;
-                View.txtSuffix.BackColor = Model.AutoSuffix ? UI.ClrBack : UI.ClrEditBack;
+                View.txtSuffix.ForeColor = Model.AutoSuffix ? UI.ClrFolderIcon : UI.ClrFont;
+                View.txtSuffix.BackColor = Model.AutoSuffix ? UI.ClrChatBg : UI.ClrFolderListSel;
 
                 if (!Model.AutoSuffix && !changes.Contains(p_TPTrimTextDlg.AutoPrefixChanged)) 
                     View.txtSuffix.Focus();

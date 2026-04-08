@@ -11,20 +11,20 @@ namespace DevNotepad.Dialogs.TPTrimTextDlg
 
         private void v_TPTrimTextDlg_Load(object sender, EventArgs e)
         {
-            BackColor = UI.ClrBack;
+            BackColor = UI.ClrChatListBg;
 
-            lblPrefix.ForeColor = UI.ClrListFore;
+            lblPrefix.ForeColor = UI.ClrFont;
             lblPrefix.Font = UI.Font14;
 
-            chkAutoPrefix.ForeColor = UI.ClrListFore;
+            chkAutoPrefix.ForeColor = UI.ClrFont;
             chkAutoPrefix.Font = UI.Font14;
 
             txtPrefix.Font = UI.Font14;
 
-            lblSuffix.ForeColor = UI.ClrListFore;
+            lblSuffix.ForeColor = UI.ClrFont;
             lblSuffix.Font = UI.Font14;
 
-            chkAutoSuffix.ForeColor = UI.ClrListFore;
+            chkAutoSuffix.ForeColor = UI.ClrFont;
             chkAutoSuffix.Font = UI.Font14;
 
             txtSuffix.Font = UI.Font14;

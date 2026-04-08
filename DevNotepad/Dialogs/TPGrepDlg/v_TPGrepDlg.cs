@@ -11,22 +11,22 @@ namespace DevNotepad.Dialogs.TPGrepDlg
 
         private void v_TPGrepDlg_Load(object sender, EventArgs e)
         {
-            BackColor = UI.ClrBack;
+            BackColor = UI.ClrChatListBg;
 
-            lblSearchText.ForeColor = UI.ClrListFore;
+            lblSearchText.ForeColor = UI.ClrFont;
             lblSearchText.Font = UI.Font14;
 
-            txtSearchText.BackColor = UI.ClrListBack;
-            txtSearchText.ForeColor = UI.ClrListFore;
+            txtSearchText.BackColor = UI.ClrChatBg;
+            txtSearchText.ForeColor = UI.ClrFont;
             txtSearchText.Font = UI.Font14;
 
-            chkExclude.ForeColor = UI.ClrListFore;
+            chkExclude.ForeColor = UI.ClrFont;
             chkExclude.Font = UI.Font14;
 
-            chkCaseSensitive.ForeColor = UI.ClrListFore;
+            chkCaseSensitive.ForeColor = UI.ClrFont;
             chkCaseSensitive.Font = UI.Font14;
 
-            chkRegEx.ForeColor = UI.ClrListFore;
+            chkRegEx.ForeColor = UI.ClrFont;
             chkRegEx.Font = UI.Font14;
         }
     }

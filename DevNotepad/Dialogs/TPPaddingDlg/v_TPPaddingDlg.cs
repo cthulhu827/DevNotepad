@@ -11,29 +11,29 @@ namespace DevNotepad.Dialogs.TPPaddingDlg
 
         private void v_TPPaddingDlg_Load(object sender, EventArgs e)
         {
-            BackColor = UI.ClrBack;
+            BackColor = UI.ClrChatListBg;
 
-            lblTotalLength.ForeColor = UI.ClrListFore;
+            lblTotalLength.ForeColor = UI.ClrFont;
             lblTotalLength.Font = UI.Font14;
 
-            txtTotalLength.BackColor = UI.ClrListBack;
-            txtTotalLength.ForeColor = UI.ClrListFore;
+            txtTotalLength.BackColor = UI.ClrChatBg;
+            txtTotalLength.ForeColor = UI.ClrFont;
             txtTotalLength.Font = UI.Font14;
 
-            lblSymbol.ForeColor = UI.ClrListFore;
+            lblSymbol.ForeColor = UI.ClrFont;
             lblSymbol.Font = UI.Font14;
 
-            txtSymbol.BackColor = UI.ClrListBack;
-            txtSymbol.ForeColor = UI.ClrListFore;
+            txtSymbol.BackColor = UI.ClrChatBg;
+            txtSymbol.ForeColor = UI.ClrFont;
             txtSymbol.Font = UI.Font14;
 
-            lblType.ForeColor = UI.ClrListFore;
+            lblType.ForeColor = UI.ClrFont;
             lblType.Font = UI.Font14;
 
-            rbLeading.ForeColor = UI.ClrListFore;
+            rbLeading.ForeColor = UI.ClrFont;
             rbLeading.Font = UI.Font14;
 
-            rbTrailing.ForeColor = UI.ClrListFore;
+            rbTrailing.ForeColor = UI.ClrFont;
             rbTrailing.Font = UI.Font14;
         }
     }

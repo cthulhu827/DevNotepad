@@ -11,16 +11,15 @@ namespace DevNotepad.Dialogs.TPEndWithSuffixDlg
 
         private void v_TPEndWithSuffixDlg_Load(object sender, EventArgs e)
         {
-            BackColor = UI.ClrBack;
+            BackColor = UI.ClrChatListBg;
 
-            lblSuffix.ForeColor = UI.ClrListFore;
+            lblSuffix.ForeColor = UI.ClrFont;
 
-            txtSuffix.BackColor = UI.ClrListBack;
-            txtSuffix.ForeColor = UI.ClrListFore;
+            txtSuffix.BackColor = UI.ClrChatBg;
+            txtSuffix.ForeColor = UI.ClrFont;
             txtSuffix.Font = UI.Font14;
 
-            chkExceptLastLine.BackColor = UI.ClrBack;
-            chkExceptLastLine.ForeColor = UI.ClrListFore;
+            chkExceptLastLine.ForeColor = UI.ClrFont;
             chkExceptLastLine.Font = UI.Font14;
         }
     }

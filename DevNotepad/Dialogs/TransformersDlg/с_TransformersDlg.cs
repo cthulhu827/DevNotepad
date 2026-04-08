@@ -22,9 +22,9 @@ public class с_TransformersDlg : ModalDialogController<m_TransformersDlg, v_Tra
     {
         var vm = Model.FilteredTransformers[e.Index];
         var g = e.Graphics;
-        var b = e.State.HasFlag(DrawItemState.Selected) ? UI.BrListSel : UI.BrListBack;
+        var b = e.State.HasFlag(DrawItemState.Selected) ? UI.BrChatListSel : UI.BrChatListBg;
         g.FillRectangle(b, e.Bounds);
-        g.DrawString(vm.Text, UI.Font14, UI.BrListFore, new PointF(e.Bounds.X, e.Bounds.Y));
+        g.DrawString(vm.Text, UI.Font14, UI.BrFont, new PointF(e.Bounds.X, e.Bounds.Y));
     }
 
     private void txtSearch_KeyDown(object? sender, KeyEventArgs e)

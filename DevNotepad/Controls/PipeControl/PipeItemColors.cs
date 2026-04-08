@@ -7,17 +7,11 @@ public class PipeItemColors
 {
     public const int IconSize = 20;
 
-    public static readonly Color ClrBack = Color.FromArgb(14, 22, 33); // Chat BG
-    public static readonly Color ClrPipeBack = Color.FromArgb(37, 48, 62); // Folder list selection
-    public static readonly Color ClrListSel = Color.FromArgb(43, 82, 120); // Chat list selection
-    public static readonly Color ClrListSel2 = Color.FromArgb(94, 181, 247); // Folder icon selected
-    public static readonly Color ClrFolderIcon = Color.FromArgb(118, 140, 158); // Folder icon
+    public static readonly PipeItemColors Inactive = new(UI.ClrFolderIcon, UI.ClrFont);
+    public static readonly PipeItemColors Active = new(UI.ClrChatListSel, UI.ClrFont);
+    public static readonly PipeItemColors Selected = new(UI.ClrFolderIconSel, Color.Black);
 
-    public static readonly PipeItemColors Inactive = new(ClrFolderIcon, Color.White);
-    public static readonly PipeItemColors Active = new(ClrListSel, Color.White);
-    public static readonly PipeItemColors Selected = new(ClrListSel2, Color.Black);
-
-    public static readonly Pen PenEdit = new(Color.White);
+    public static readonly Pen PenEdit = new(UI.ClrFont);
     public static readonly Pen PenView = new(Color.Black);
 
     public PipeItemColors(Color bgColor, Color foreColor)

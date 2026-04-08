@@ -11,10 +11,10 @@ namespace DevNotepad.Dialogs.TPSingleParamDlg
 
         private void v_TPSingleParamDlg_Load(object sender, EventArgs e)
         {
-            BackColor = UI.ClrBack;
+            BackColor = UI.ClrChatListBg;
 
-            txtParameterText.BackColor = UI.ClrListBack;
-            txtParameterText.ForeColor = UI.ClrListFore;
+            txtParameterText.BackColor = UI.ClrChatBg;
+            txtParameterText.ForeColor = UI.ClrFont;
             txtParameterText.Font = UI.Font14;
         }
     }

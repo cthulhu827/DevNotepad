@@ -10,16 +10,12 @@ public partial class ToolBar : UserControl
     private const int PaddingY = 2;
     private const int Offset = 6;
 
-    private static readonly Color ClrBack = Color.FromArgb(37, 48, 62); // inactive bg
-    private static readonly Color ClrSelected = Color.FromArgb(43, 82, 120); // selected bg
-    private static readonly Color ClrFore = Color.White;
-
-    private static readonly SolidBrush BrushInactiveBg = new(ClrBack);
-    private static readonly SolidBrush BrushSelectedBg = new(UI.ClrListSel2);
-    private static readonly SolidBrush BrushFore = new(ClrFore);
-    private static readonly Pen PenBorder = new(UI.ClrListSel2);
+    private static readonly Brush BrushInactiveBg = UI.BrChatListBg;
+    private static readonly Brush BrushSelectedBg = UI.BrChatListSel;
+    private static readonly Pen PenBorder = new(UI.ClrFolderIconSel);
 
     private IDataSource<VM_ToolButton> dataSource = DataSourceFactory.CreateNull<VM_ToolButton>();
+
     private int selectedIndex = -1;
 
     private Rectangle[] buttonRects = Array.Empty<Rectangle>();
@@ -127,7 +123,7 @@ public partial class ToolBar : UserControl
 
             float textX = rect.Left + PaddingX;
             float textY = rect.Top + PaddingY;
-            g.DrawString(item.Text, Font, BrushFore, textX, textY, StringFormat.GenericTypographic);
+            g.DrawString(item.Text, Font, UI.BrFont, textX, textY, StringFormat.GenericTypographic);
         }
     }
 
