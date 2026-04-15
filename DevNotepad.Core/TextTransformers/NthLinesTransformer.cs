@@ -7,7 +7,7 @@ namespace DevNotepad.Core.TextTransformers
     public class NthLinesTransformer : BaseTextTransformer, IParametrizedTextTransformer, ISingleParameterTextTransformer
     {
         [TextTransformer("Odd Lines", "33039a27-b89b-45f3-a4e0-16f66e951c20")]
-        private static ITextTransformer BuildOdd() => new NthLinesTransformer { Parameter = "1/2", DontEditNew = true };
+        private static ITextTransformer BuildOdd() => new NthLinesTransformer { Parameter = "2/1", DontEditNew = true };
 
         [TextTransformer("Even Lines", "9267e72f-9f3b-4407-9112-5291165e2425")]
         private static ITextTransformer BuildEven() => new NthLinesTransformer { Parameter = "2/2", DontEditNew = true };
@@ -25,7 +25,7 @@ namespace DevNotepad.Core.TextTransformers
 
             for (var groupStart = 0; groupStart < lines.Length; groupStart += groupSize)
             {
-                var currentGroupSize = System.Math.Min(groupSize, lines.Length - groupStart);
+                var currentGroupSize = Math.Min(groupSize, lines.Length - groupStart);
 
                 foreach (var lineNumber in lineNumbers)
                 {
@@ -56,13 +56,13 @@ namespace DevNotepad.Core.TextTransformers
             set
             {
                 expression = value;
-                (groupSize, lineNumbers) = ParseExpression();
+                (groupSize, lineNumbers) = ParseExpression(expression);
             }
         }
 
-        private (int, int[]) ParseExpression()
+        private static (int, int[]) ParseExpression(string expression)
         {
-            var invalid = (0, System.Array.Empty<int>());
+            var invalid = (0, Array.Empty<int>());
 
             if (string.IsNullOrWhiteSpace(expression))
             {
@@ -75,8 +75,8 @@ namespace DevNotepad.Core.TextTransformers
                 return invalid;
             }
 
-            var lineNumbersPart = parts[0].Trim();
-            var groupSizePart = parts[1].Trim();
+            var lineNumbersPart = parts[1].Trim();
+            var groupSizePart = parts[0].Trim();
 
             if (string.IsNullOrWhiteSpace(lineNumbersPart) || string.IsNullOrWhiteSpace(groupSizePart))
             {
