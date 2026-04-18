@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             txtParameterText = new TextBox();
+            lblHint = new Label();
             SuspendLayout();
             // 
             // btnOK
@@ -45,17 +46,27 @@
             // 
             // txtParameterText
             // 
-            txtParameterText.Location = new Point(13, 13);
-            txtParameterText.Margin = new Padding(5, 5, 5, 5);
+            txtParameterText.Location = new Point(8, 16);
+            txtParameterText.Margin = new Padding(5);
             txtParameterText.Name = "txtParameterText";
-            txtParameterText.Size = new Size(771, 32);
+            txtParameterText.Size = new Size(776, 32);
             txtParameterText.TabIndex = 0;
+            // 
+            // lblHint
+            // 
+            lblHint.AutoSize = true;
+            lblHint.Location = new Point(8, 56);
+            lblHint.Name = "lblHint";
+            lblHint.Size = new Size(68, 25);
+            lblHint.TabIndex = 2;
+            lblHint.Text = "lblHint";
             // 
             // v_TPSingleParamDlg
             // 
             AutoScaleDimensions = new SizeF(11F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(793, 116);
+            Controls.Add(lblHint);
             Controls.Add(txtParameterText);
             Font = new Font("Segoe UI", 14F, FontStyle.Regular, GraphicsUnit.Point);
             Margin = new Padding(6, 5, 6, 5);
@@ -65,6 +76,7 @@
             Controls.SetChildIndex(btnOK, 0);
             Controls.SetChildIndex(btnCancel, 0);
             Controls.SetChildIndex(txtParameterText, 0);
+            Controls.SetChildIndex(lblHint, 0);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -72,5 +84,6 @@
         #endregion
 
         internal TextBox txtParameterText;
+        internal Label lblHint;
     }
 }

@@ -3,5 +3,7 @@
     public interface ISingleParameterTextTransformer
     {
         string Parameter { get; set; }
+
+        string Hint => string.Empty;
     }
 }

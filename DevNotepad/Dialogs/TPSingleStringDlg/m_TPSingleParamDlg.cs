@@ -11,4 +11,6 @@ public class m_TPSingleParamDlg<TTransformer> : m_TPBase<TTransformer, p_TPSingl
         get => Transformer.Parameter;
         set => eventRaiser.Raise(() => Transformer.Parameter = value, p_TPSingleParamDlg.ParameterChanged);
     }
+
+    public string Hint => Transformer.Hint;
 }

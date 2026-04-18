@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace DevNotepad.Core.TextTransformers
 {
@@ -53,6 +54,8 @@ namespace DevNotepad.Core.TextTransformers
             set => Format = value;
         }
 
+        public string Hint => ", 🡒 1 000 000\ng2+ 🡒 1.23 Gb    g2 🡒 1.23    g+ 🡒 1 Gb    g 🡒 1";
+
         private static (SizeDescription? format, int precision, bool appendUnit) ParseFormat(string formatLower)
         {
             var incorrect = (null as SizeDescription, 0, false);
@@ -101,7 +104,7 @@ namespace DevNotepad.Core.TextTransformers
 
         private static string ConvertSize(long sizeInBytes, int power, string unit, int precision, bool appendUnit)
         {
-            long divisor = (long)System.Math.Pow(1024, power);
+            long divisor = (long)Math.Pow(1024, power);
             double result = (double)sizeInBytes / divisor;
             string formatted = result.ToString($"F{precision}");
             return appendUnit ? $"{formatted} {unit}" : formatted;

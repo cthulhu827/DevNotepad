@@ -16,6 +16,9 @@ namespace DevNotepad.Dialogs.TPSingleParamDlg
             txtParameterText.BackColor = UI.ClrChatBg;
             txtParameterText.ForeColor = UI.ClrFont;
             txtParameterText.Font = UI.Font14;
+
+            lblHint.ForeColor = UI.ClrFont;
+            lblHint.Font = UI.Font10;
         }
     }
 }

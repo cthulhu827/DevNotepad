@@ -1,5 +1,4 @@
-﻿using DevNotepad.Core;
-using DevNotepad.Core.TextTransformers;
+﻿using DevNotepad.Core.TextTransformers;
 using DevNotepad.Dialogs.TPBase;
 using Framework.MVC;
 
@@ -38,6 +37,7 @@ public class c_TPSingleParamDlg<TModel> : c_TPBase<TModel, v_TPSingleParamDlg>
         base.DoConnectModel();
 
         View.Text = Model.Transformer.Caption;
+        View.lblHint.Text = Model.Hint;
 
         View.txtParameterText.TextChanged += txtParameter_TextChanged;
 

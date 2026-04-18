@@ -60,6 +60,8 @@ namespace DevNotepad.Core.TextTransformers
             }
         }
 
+        public string Hint => "<Group size>/<Line numbers> 🡒 6/1-3,6";
+
         private static (int, int[]) ParseExpression(string expression)
         {
             var invalid = (0, Array.Empty<int>());
