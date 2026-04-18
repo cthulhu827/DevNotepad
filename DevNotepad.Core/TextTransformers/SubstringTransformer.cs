@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 
 namespace DevNotepad.Core.TextTransformers
 {
@@ -102,6 +103,9 @@ namespace DevNotepad.Core.TextTransformers
             };
         }
 
+        private static readonly Regex IntWithPlusesPattern = new Regex(@"^(\d+)(\+)+$", RegexOptions.Compiled);
+        private static readonly Regex IntWithMinusesPattern = new Regex(@"^(\d+)(\-)+$", RegexOptions.Compiled);
+
         private static int ParseLimit(string limit)
         {
             if (string.IsNullOrWhiteSpace(limit))
@@ -111,6 +115,24 @@ namespace DevNotepad.Core.TextTransformers
 
             if (int.TryParse(limit, out var result))
             {
+                return result;
+            }
+
+            var match = IntWithPlusesPattern.Match(limit);
+            if (match.Success)
+            {
+                var baseValue = int.Parse(match.Groups[1].Value);
+                var plusCount = match.Groups[2].Captures.Count;
+                return baseValue + plusCount;
+            }
+
+            match = IntWithMinusesPattern.Match(limit);
+            if (match.Success)
+            {
+                var baseValue = int.Parse(match.Groups[1].Value);
+                var minusCount = match.Groups[2].Captures.Count;
+                result = baseValue - minusCount;
+                if (result < 0) result = 0;
                 return result;
             }
 
