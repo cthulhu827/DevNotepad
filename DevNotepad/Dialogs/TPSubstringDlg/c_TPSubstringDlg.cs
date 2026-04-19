@@ -1,4 +1,4 @@
-using DevNotepad.Core.TextTransformers;
+﻿using DevNotepad.Core.TextTransformers;
 using DevNotepad.Dialogs.TPBase;
 using static DevNotepad.Dialogs.TPSubstringDlg.p_TPSubstringDlg;
 
@@ -19,12 +19,18 @@ public class c_TPSubstringDlg : c_TPBase<m_TPSubstringDlg, v_TPSubstringDlg>
         radioButtons.Add(SubstringType.TakeEnd, View.rbTakeEnd);
         radioButtons.Add(SubstringType.TakeBefore, View.rbTakeBefore);
         radioButtons.Add(SubstringType.TakeAfter, View.rbTakeAfter);
+        radioButtons.Add(SubstringType.BySelection, View.rbBySelection);
 
         View.Text = Model.Transformer.Caption;
 
         View.txtLimit.TextChanged += txtLimit_TextChanged;
+        View.txtLimit.KeyUp += txtLimit_SelectionChanged;
+        View.txtLimit.MouseClick += txtLimit_SelectionChanged;
+
         foreach (var radioButton in radioButtons.Values)
         {
+            radioButton.ForeColor = UI.ClrFont;
+            radioButton.Font = UI.Font14;
             radioButton.CheckedChanged += rbType_CheckedChanged;
         }
 
@@ -34,6 +40,9 @@ public class c_TPSubstringDlg : c_TPBase<m_TPSubstringDlg, v_TPSubstringDlg>
     protected override void DoDisconnectModel()
     {
         View.txtLimit.TextChanged -= txtLimit_TextChanged;
+        View.txtLimit.KeyUp -= txtLimit_SelectionChanged;
+        View.txtLimit.MouseClick -= txtLimit_SelectionChanged;
+
         foreach (var radioButton in radioButtons.Values)
         {
             radioButton.CheckedChanged -= rbType_CheckedChanged;
@@ -69,6 +78,12 @@ public class c_TPSubstringDlg : c_TPBase<m_TPSubstringDlg, v_TPSubstringDlg>
             }
 
             UI.UnfocusCheckBox(View.txtLimit, changes, TypeChanged);
+
+            // Делаем после UI.UnfocusCheckBox, т.к. UI.UnfocusCheckBox сбрасывает выделение текста.
+            if (changes.Contains(SelectionChanged))
+            {
+                View.txtLimit.Select(Model.Selection.SelStart, Model.Selection.SelLength);
+            }
         });
     }
 
@@ -76,6 +91,12 @@ public class c_TPSubstringDlg : c_TPBase<m_TPSubstringDlg, v_TPSubstringDlg>
     {
         if (modelSuppressor.Suppress) return;
         Model.Limit = View.txtLimit.Text;
+    }
+
+    private void txtLimit_SelectionChanged(object? sender, EventArgs e)
+    {
+        if (modelSuppressor.Suppress) return;
+        Model.Selection = new(View.txtLimit.SelectionStart, View.txtLimit.SelectionLength);
     }
 
     private void rbType_CheckedChanged(object? sender, EventArgs e)

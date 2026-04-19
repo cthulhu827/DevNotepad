@@ -22,24 +22,6 @@ namespace DevNotepad.Dialogs.TPSubstringDlg
 
             lblType.ForeColor = UI.ClrFont;
             lblType.Font = UI.Font14;
-
-            rbSkipStart.ForeColor = UI.ClrFont;
-            rbSkipStart.Font = UI.Font14;
-
-            rbSkipEnd.ForeColor = UI.ClrFont;
-            rbSkipEnd.Font = UI.Font14;
-
-            rbTakeStart.ForeColor = UI.ClrFont;
-            rbTakeStart.Font = UI.Font14;
-
-            rbTakeEnd.ForeColor = UI.ClrFont;
-            rbTakeEnd.Font = UI.Font14;
-
-            rbTakeBefore.ForeColor = UI.ClrFont;
-            rbTakeBefore.Font = UI.Font14;
-
-            rbTakeAfter.ForeColor = UI.ClrFont;
-            rbTakeAfter.Font = UI.Font14;
         }
     }
 }

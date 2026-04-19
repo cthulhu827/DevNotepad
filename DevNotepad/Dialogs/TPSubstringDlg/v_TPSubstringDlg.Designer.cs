@@ -37,18 +37,19 @@ namespace DevNotepad.Dialogs.TPSubstringDlg
             rbTakeEnd = new RadioButton();
             rbTakeBefore = new RadioButton();
             rbTakeAfter = new RadioButton();
+            rbBySelection = new RadioButton();
             SuspendLayout();
             // 
             // btnOK
             // 
-            btnOK.Location = new Point(109, 183);
+            btnOK.Location = new Point(109, 223);
             btnOK.Margin = new Padding(6, 5, 6, 5);
             btnOK.Size = new Size(146, 45);
             btnOK.TabIndex = 7;
             // 
             // btnCancel
             // 
-            btnCancel.Location = new Point(263, 183);
+            btnCancel.Location = new Point(263, 223);
             btnCancel.Margin = new Padding(6, 5, 6, 5);
             btnCancel.Size = new Size(146, 45);
             btnCancel.TabIndex = 8;
@@ -144,11 +145,23 @@ namespace DevNotepad.Dialogs.TPSubstringDlg
             rbTakeAfter.Text = "Take after (&6)";
             rbTakeAfter.UseVisualStyleBackColor = true;
             // 
+            // rbBySelection
+            // 
+            rbBySelection.AutoSize = true;
+            rbBySelection.Location = new Point(88, 176);
+            rbBySelection.Name = "rbBySelection";
+            rbBySelection.Size = new Size(157, 29);
+            rbBySelection.TabIndex = 11;
+            rbBySelection.TabStop = true;
+            rbBySelection.Text = "By selection (&7)";
+            rbBySelection.UseVisualStyleBackColor = true;
+            // 
             // v_TPSubstringDlg
             // 
             AutoScaleDimensions = new SizeF(11F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(417, 236);
+            ClientSize = new Size(417, 276);
+            Controls.Add(rbBySelection);
             Controls.Add(rbTakeAfter);
             Controls.Add(rbTakeBefore);
             Controls.Add(rbTakeEnd);
@@ -173,6 +186,7 @@ namespace DevNotepad.Dialogs.TPSubstringDlg
             Controls.SetChildIndex(rbTakeEnd, 0);
             Controls.SetChildIndex(rbTakeBefore, 0);
             Controls.SetChildIndex(rbTakeAfter, 0);
+            Controls.SetChildIndex(rbBySelection, 0);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -188,5 +202,6 @@ namespace DevNotepad.Dialogs.TPSubstringDlg
         internal RadioButton rbTakeEnd;
         internal RadioButton rbTakeBefore;
         internal RadioButton rbTakeAfter;
+        internal RadioButton rbBySelection;
     }
 }

@@ -48,6 +48,8 @@ namespace DevNotepad.Core.TextTransformers
 
         public SubstringType Type { get; set; }
 
+        public (int SelStart, int SelLength) Selection { get; set; }
+
         public bool DontEditNew { get; private set; }
 
         protected override string TransformLine(string line)
@@ -62,6 +64,7 @@ namespace DevNotepad.Core.TextTransformers
                 SubstringType.TakeEnd => SubstringByLimit(line),
                 SubstringType.TakeBefore => SubstringBySeparator(line),
                 SubstringType.TakeAfter => SubstringBySeparator(line),
+                SubstringType.BySelection => SubstringBySelection(line),
                 _ => line
             };
         }
@@ -101,6 +104,13 @@ namespace DevNotepad.Core.TextTransformers
                 SubstringType.TakeAfter => TakeAfter(line),
                 _ => line
             };
+        }
+
+        private string SubstringBySelection(string line)
+        {
+            return Selection.SelLength == 0 || Selection.SelStart + Selection.SelLength > line.Length
+                ? line
+                : line.Substring(Selection.SelStart, Selection.SelLength);
         }
 
         private static readonly Regex IntWithPlusesPattern = new Regex(@"^(\d+)(\+)+$", RegexOptions.Compiled);

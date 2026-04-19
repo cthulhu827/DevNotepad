@@ -8,7 +8,7 @@ public class m_TPBase<TTransformer, TEnum> : MVC_Model, ITPDlgModel
     where TEnum : struct, Enum
 {
     private TTransformer? transformer;
-    private string[]? source;
+    protected string[]? source;
     private ITransformerEditSession? editSession;
 
     protected readonly EventRaiser<TEnum> eventRaiser;

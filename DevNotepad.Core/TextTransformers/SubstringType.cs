@@ -8,5 +8,6 @@
         TakeEnd,
         TakeBefore,
         TakeAfter,
+        BySelection,
     }
 }
