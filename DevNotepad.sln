@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevNotepad", "DevNotepad\De
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevNotepad.Core", "DevNotepad.Core\DevNotepad.Core.csproj", "{B512F74F-D5E4-4A38-8BFC-7DE440759D7E}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevNotepad.Core.Tests", "DevNotepad.Core.Tests\DevNotepad.Core.Tests.csproj", "{5305B6E5-16F0-46C3-8E8A-3924D852E3A0}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{192DC20E-2B7A-42D3-A29B-A4DE8991013C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework", "Framework\Framework\Framework.csproj", "{94823CCB-933E-4C74-B5AD-E32BFFE352DB}"
@@ -29,6 +31,10 @@ Global
 		{B512F74F-D5E4-4A38-8BFC-7DE440759D7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B512F74F-D5E4-4A38-8BFC-7DE440759D7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B512F74F-D5E4-4A38-8BFC-7DE440759D7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5305B6E5-16F0-46C3-8E8A-3924D852E3A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5305B6E5-16F0-46C3-8E8A-3924D852E3A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5305B6E5-16F0-46C3-8E8A-3924D852E3A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5305B6E5-16F0-46C3-8E8A-3924D852E3A0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{94823CCB-933E-4C74-B5AD-E32BFFE352DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{94823CCB-933E-4C74-B5AD-E32BFFE352DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94823CCB-933E-4C74-B5AD-E32BFFE352DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
