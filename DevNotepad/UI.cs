@@ -1,5 +1,6 @@
 ﻿using DevNotepad.Core;
 using DevNotepad.Dialogs.TransformersDlg;
+using DevNotepad.Infrastructure;
 
 namespace DevNotepad;
 
@@ -25,8 +26,12 @@ public static class UI
 
     public static Guid? AskTransformer()
     {
+        var counter = new TransformersCallCounter(Program.Settings.RecentTransformersPath);
+        var counts = counter.ReadAll();
         var allTransformers = Domain.All
             .Select(a => new VM_TransformerForDlg(a.Id, a.Caption))
+            .OrderByDescending(a => counts.TryGetValue(a.TransformerId, out var c) ? c : 0)
+            .ThenBy(a => a.Caption, StringComparer.CurrentCultureIgnoreCase)
             .ToArray();
 
         var model = new m_TransformersDlg(allTransformers.ToArray());
@@ -35,6 +40,7 @@ public static class UI
         if (!controller.ShowDialog(model)) return null;
 
         var selected = model.AllTransformers.SingleOrDefault(vm => vm.Id == model.SelectedId);
+        if (selected != null) counter.Increment(selected.TransformerId);
         return selected?.TransformerId;
     }
 

@@ -1,15 +1,25 @@
 using DevNotepad.Controls.MainWindow;
+using DevNotepad.Infrastructure;
+using Microsoft.Extensions.Configuration;
 
 namespace DevNotepad
 {
     internal static class Program
     {
+        public static AppSettings Settings { get; private set; } = new AppSettings();
+
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
         [STAThread]
         static void Main()
         {
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(AppContext.BaseDirectory)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: false)
+                .Build();
+            Settings = configuration.GetSection("AppSettings").Get<AppSettings>() ?? new AppSettings();
+
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
