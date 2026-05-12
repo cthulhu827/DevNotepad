@@ -1,12 +1,13 @@
 ﻿using DevNotepad.Controls.WorkArea;
 using DevNotepad.Infrastructure;
 using Framework.MVC;
+using System.Linq;
 
 namespace DevNotepad.Controls.Page;
 
 public class c_Page : MVC_Controller<m_Page, v_Page>, IKeyHandler
 {
-    private readonly IList<c_WorkArea> workAreas = new List<c_WorkArea>();
+    private IList<c_WorkArea> workAreas = new List<c_WorkArea>();
 
     protected override void DoConnectModel()
     {
@@ -26,47 +27,78 @@ public class c_Page : MVC_Controller<m_Page, v_Page>, IKeyHandler
 
         modelSuppressor.Exec(() =>
         {
-            if (changes.Contains(p_Page.WorkAreaAdded))
+            if (changes.Contains(p_Page.WorkAreasListChanged))
             {
-                // todo: учитывать, что может быть добавлено несколько моделей; есть пример в c_MainWindow
-                if (Model.WorkAreas.Any()) AddWorkArea(Model.WorkAreas.Last());
+                UpdateWorkAreasByModel();
             }
         });
     }
 
-    private void AddWorkArea(m_WorkArea model)
+    private void UpdateWorkAreasByModel()
     {
-        var controller = new c_WorkArea
+        // Определяем удалённые workarea, т.е. те, которые ещё присутствуют
+        // во View и в контроллере, но уже отсутствуют в модели.
+        var removedWorkAreas = workAreas
+            .Where(cWorkArea => !Model.WorkAreas.Contains(cWorkArea.Model))
+            .ToArray();
+
+        // Строим мап "Модель -> Контроллер", чтобы пары в нём шли в том же порядке,
+        // в каком идут в модели. Это позволит учесть в том числе и случаи, когда
+        // новая workarea добавлена в середину Model.WorkAreas.
+        var map = Model.WorkAreas.ToDictionary(mWorkArea => mWorkArea, _ => (c_WorkArea?)null);
+
+        // Записываем в мап контроллеры, которые уже созданы ранее.
+        foreach (var cWorkArea in workAreas.Except(removedWorkAreas))
         {
-            View = new v_WorkArea(),
-            Model = model
-        };
-        workAreas.Add(controller);
-        AddWorkArea(controller);
-    }
+            map[cWorkArea.Model] = cWorkArea;
+        }
 
-    private void AddWorkArea(c_WorkArea controller)
-    {
-        var prevView = workAreas
-            .Select(c => c.View)
-            .Reverse()
-            .Skip(1)
-            .FirstOrDefault();
-        if (prevView != null) prevView.Dock = DockStyle.Top;
+        // Таким образом в мапе теперь пустое Value только для добавленных моделей.
+        // Нужно для них создать View и Controller'ы.
+        var modelsToAdd = map
+            .Where(pair => pair.Value == null)
+            .Select(pair => pair.Key)
+            .ToArray();
+        c_WorkArea? lastAdded = null;
+        foreach (var mWorkArea in modelsToAdd)
+        {
+            lastAdded = new c_WorkArea
+            {
+                View = new v_WorkArea { Parent = View },
+                Model = mWorkArea
+            };
+            map[mWorkArea] = lastAdded;
+        }
 
-        var view = controller.View;
-        view.Parent = View;
-        view.Dock = DockStyle.Fill;
-        view.BringToFront();
+        // Запоминаем новый список контроллеров с учётом добавленных страниц.
+        workAreas = map.Values.Select(cWorkArea => cWorkArea!).ToArray();
 
+        // Удаляем View для удалённых workarea.
+        foreach (var cWorkArea in removedWorkAreas)
+        {
+            View.Controls.Remove(cWorkArea.View);
+        }
+
+        // Переразмещаем оставшиеся вьюхи.
         AdjusthWorkAreas();
 
-        controller.SetFocus();
+        // Фокусируем последнюю добавленую workarea. В большинстве случаев
+        // добавляется одна workarea, она и будет сфокусирована.
+        // Неплохо бы также перемещать фокус после удаления workarea в следующую за ней
+        // или в предыдущую, но пока это кажется избыточным усложнением кода.
+        lastAdded?.SetFocus();
     }
 
     private void AdjusthWorkAreas()
     {
         var allViews = workAreas.Select(controller => controller.View).ToArray();
+
+        for (int i = 0; i < allViews.Length; i++)
+        {
+            allViews[i].Dock = i == allViews.Length - 1 ? DockStyle.Fill : DockStyle.Top;
+        }
+        allViews.LastOrDefault()?.BringToFront();
+
         var unresizedViews = allViews.Where(view => !view.ManualResized).ToArray();
         if (unresizedViews.Length < 2) return;
 
@@ -122,6 +154,10 @@ public class c_Page : MVC_Controller<m_Page, v_Page>, IKeyHandler
         }
         else if (e is { KeyCode: >= Keys.NumPad1 and <= Keys.NumPad9, Control: true })
             FocusWorkArea(e.KeyCode - Keys.NumPad1, GetFocusedWorkAreaIdx());
+        else if (e is { KeyCode: Keys.W, Control: true })
+        {
+            Model.RemoveWorkArea(GetFocusedWorkAreaIdx());
+        }
         else
             result = false;
 

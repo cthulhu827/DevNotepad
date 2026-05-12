@@ -19,7 +19,13 @@ public class m_Page : MVC_Model
 
     public void AddWorkArea(m_WorkArea? model = null)
     {
-        eventRaiser.Raise(() => workAreas.Add(model ?? new m_WorkArea()), p_Page.WorkAreaAdded);
+        eventRaiser.Raise(() => workAreas.Add(model ?? new m_WorkArea()), p_Page.WorkAreasListChanged);
+    }
+
+    public void RemoveWorkArea(int idx)
+    {
+        if (idx == -1) return;
+        eventRaiser.Raise(() => workAreas.RemoveAt(idx), p_Page.WorkAreasListChanged);
     }
 
     private void ApplyChanges(ICollection<p_Page> changes)

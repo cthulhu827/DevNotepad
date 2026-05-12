@@ -2,5 +2,5 @@
 
 public enum p_Page
 {
-    WorkAreaAdded,
+    WorkAreasListChanged,
 }
