@@ -14,6 +14,7 @@ public class c_MainWindow : MVC_Controller<m_MainWindow, v_MainWindow>, IKeyHand
 
         View.KeyDown += View_KeyDown;
         View.tbPages.OnSelectedIndexChanged += TbPages_OnSelectedIndexChanged;
+        View.tmrTimer.Tick += TmrTimer_Tick;
         View.button1.Click += Button1_Click;
 
         View.tbPages.DataSource = Model.ToolButtons;
@@ -27,6 +28,7 @@ public class c_MainWindow : MVC_Controller<m_MainWindow, v_MainWindow>, IKeyHand
 
         View.KeyDown -= View_KeyDown;
         View.tbPages.OnSelectedIndexChanged -= TbPages_OnSelectedIndexChanged;
+        View.tmrTimer.Tick -= TmrTimer_Tick;
         View.button1.Click -= Button1_Click;
 
         base.DoDisconnectModel();
@@ -121,6 +123,11 @@ public class c_MainWindow : MVC_Controller<m_MainWindow, v_MainWindow>, IKeyHand
         Model.SelectedIndex = View.tbPages.SelectedIndex;
     }
 
+    private void TmrTimer_Tick(object? sender, EventArgs e)
+    {
+        View.Text = DateTime.Now.TimeOfDay.ToString("hh\\:mm\\:ss");
+    }
+
     private void Button1_Click(object? sender, EventArgs e)
     {
     }
@@ -136,6 +143,11 @@ public class c_MainWindow : MVC_Controller<m_MainWindow, v_MainWindow>, IKeyHand
             Model.AddPage();
         else if (e is { KeyCode: Keys.Tab, Control: true })
             Model.NextPage(!e.Shift);
+        else if (e is { KeyCode: Keys.F12 })
+        {
+            View.tmrTimer.Enabled = !View.tmrTimer.Enabled;
+            if (!View.tmrTimer.Enabled) View.Text = "Developer Notepad";
+        }
         else
             result = false;
 

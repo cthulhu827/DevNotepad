@@ -28,10 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(v_MainWindow));
             panel1 = new Panel();
             button1 = new Button();
             tbPages = new ToolBar.ToolBar();
+            tmrTimer = new System.Windows.Forms.Timer(components);
             panel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -62,6 +64,10 @@
             tbPages.Size = new Size(800, 42);
             tbPages.TabIndex = 2;
             // 
+            // tmrTimer
+            // 
+            tmrTimer.Interval = 500;
+            // 
             // v_MainWindow
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -84,5 +90,6 @@
         internal Panel panel1;
         internal Button button1;
         internal ToolBar.ToolBar tbPages;
+        internal System.Windows.Forms.Timer tmrTimer;
     }
 }
