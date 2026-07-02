@@ -28,4 +28,20 @@ public class m_TPGrepDlg : m_TPBase<GrepTransformer, p_TPGrepDlg>
         get => Transformer.RegEx;
         set => eventRaiser.Raise(() => Transformer.RegEx = value, p_TPGrepDlg.RegExChanged);
     }
+
+    public string LinesBefore
+    {
+        get => Transformer.LinesBefore.ToString();
+        set => eventRaiser.Raise(
+            () => Transformer.LinesBefore = int.TryParse(value, out var intValue) ? intValue : 0,
+            p_TPGrepDlg.LinesBefore);
+    }
+
+    public string LinesAfter
+    {
+        get => Transformer.LinesAfter.ToString();
+        set => eventRaiser.Raise(
+            () => Transformer.LinesAfter = int.TryParse(value, out var intValue) ? intValue : 0,
+            p_TPGrepDlg.LinesAfter);
+    }
 }

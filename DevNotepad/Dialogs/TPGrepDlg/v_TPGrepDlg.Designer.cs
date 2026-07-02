@@ -33,33 +33,37 @@
             chkCaseSensitive = new CheckBox();
             chkRegEx = new CheckBox();
             lblSearchText = new Label();
+            txtLinesBefore = new TextBox();
+            txtLinesAfter = new TextBox();
+            lblLinesBefore = new Label();
+            lblLinesAfter = new Label();
             SuspendLayout();
             // 
             // btnOK
             // 
-            btnOK.Location = new Point(119, 183);
+            btnOK.Location = new Point(135, 279);
             btnOK.Margin = new Padding(6, 5, 6, 5);
             btnOK.Size = new Size(146, 45);
-            btnOK.TabIndex = 5;
+            btnOK.TabIndex = 9;
             // 
             // btnCancel
             // 
-            btnCancel.Location = new Point(273, 183);
+            btnCancel.Location = new Point(289, 279);
             btnCancel.Margin = new Padding(6, 5, 6, 5);
             btnCancel.Size = new Size(146, 45);
-            btnCancel.TabIndex = 6;
+            btnCancel.TabIndex = 10;
             // 
             // txtSearchText
             // 
-            txtSearchText.Location = new Point(120, 8);
+            txtSearchText.Location = new Point(136, 8);
             txtSearchText.Name = "txtSearchText";
-            txtSearchText.Size = new Size(298, 32);
+            txtSearchText.Size = new Size(296, 32);
             txtSearchText.TabIndex = 1;
             // 
             // chkExclude
             // 
             chkExclude.AutoSize = true;
-            chkExclude.Location = new Point(120, 56);
+            chkExclude.Location = new Point(136, 56);
             chkExclude.Name = "chkExclude";
             chkExclude.Size = new Size(96, 29);
             chkExclude.TabIndex = 2;
@@ -69,7 +73,7 @@
             // chkCaseSensitive
             // 
             chkCaseSensitive.AutoSize = true;
-            chkCaseSensitive.Location = new Point(120, 96);
+            chkCaseSensitive.Location = new Point(136, 96);
             chkCaseSensitive.Name = "chkCaseSensitive";
             chkCaseSensitive.Size = new Size(148, 29);
             chkCaseSensitive.TabIndex = 3;
@@ -79,7 +83,7 @@
             // chkRegEx
             // 
             chkRegEx.AutoSize = true;
-            chkRegEx.Location = new Point(120, 136);
+            chkRegEx.Location = new Point(136, 136);
             chkRegEx.Name = "chkRegEx";
             chkRegEx.Size = new Size(190, 29);
             chkRegEx.TabIndex = 4;
@@ -95,11 +99,47 @@
             lblSearchText.TabIndex = 0;
             lblSearchText.Text = "&Search text:";
             // 
+            // txtLinesBefore
+            // 
+            txtLinesBefore.Location = new Point(136, 184);
+            txtLinesBefore.Name = "txtLinesBefore";
+            txtLinesBefore.Size = new Size(96, 32);
+            txtLinesBefore.TabIndex = 6;
+            // 
+            // txtLinesAfter
+            // 
+            txtLinesAfter.Location = new Point(136, 224);
+            txtLinesAfter.Name = "txtLinesAfter";
+            txtLinesAfter.Size = new Size(96, 32);
+            txtLinesAfter.TabIndex = 8;
+            // 
+            // lblLinesBefore
+            // 
+            lblLinesBefore.AutoSize = true;
+            lblLinesBefore.Location = new Point(8, 188);
+            lblLinesBefore.Name = "lblLinesBefore";
+            lblLinesBefore.Size = new Size(119, 25);
+            lblLinesBefore.TabIndex = 5;
+            lblLinesBefore.Text = "Lines &before:";
+            // 
+            // lblLinesAfter
+            // 
+            lblLinesAfter.AutoSize = true;
+            lblLinesAfter.Location = new Point(8, 228);
+            lblLinesAfter.Name = "lblLinesAfter";
+            lblLinesAfter.Size = new Size(103, 25);
+            lblLinesAfter.TabIndex = 7;
+            lblLinesAfter.Text = "Lines &after:";
+            // 
             // v_TPGrepDlg
             // 
             AutoScaleDimensions = new SizeF(11F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(427, 236);
+            ClientSize = new Size(443, 332);
+            Controls.Add(lblLinesAfter);
+            Controls.Add(lblLinesBefore);
+            Controls.Add(txtLinesAfter);
+            Controls.Add(txtLinesBefore);
             Controls.Add(lblSearchText);
             Controls.Add(chkRegEx);
             Controls.Add(chkCaseSensitive);
@@ -116,6 +156,10 @@
             Controls.SetChildIndex(chkCaseSensitive, 0);
             Controls.SetChildIndex(chkRegEx, 0);
             Controls.SetChildIndex(lblSearchText, 0);
+            Controls.SetChildIndex(txtLinesBefore, 0);
+            Controls.SetChildIndex(txtLinesAfter, 0);
+            Controls.SetChildIndex(lblLinesBefore, 0);
+            Controls.SetChildIndex(lblLinesAfter, 0);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -127,5 +171,9 @@
         internal CheckBox chkCaseSensitive;
         internal CheckBox chkRegEx;
         private Label lblSearchText;
+        internal TextBox txtLinesBefore;
+        internal TextBox txtLinesAfter;
+        private Label lblLinesBefore;
+        private Label lblLinesAfter;
     }
 }

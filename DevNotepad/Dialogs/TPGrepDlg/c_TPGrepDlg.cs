@@ -1,4 +1,3 @@
-using DevNotepad.Core;
 using DevNotepad.Core.TextTransformers;
 using DevNotepad.Dialogs.TPBase;
 using static DevNotepad.Dialogs.TPGrepDlg.p_TPGrepDlg;
@@ -18,6 +17,8 @@ public class c_TPGrepDlg : c_TPBase<m_TPGrepDlg, v_TPGrepDlg>
         View.chkExclude.CheckedChanged += chkExclude_CheckedChanged;
         View.chkCaseSensitive.CheckedChanged += chkCaseSensitive_CheckedChanged;
         View.chkRegEx.CheckedChanged += chkRegEx_CheckedChanged;
+        View.txtLinesBefore.TextChanged += txtLinesBefore_TextChanged;
+        View.txtLinesAfter.TextChanged += txtLinesAfter_TextChanged;
 
         ApplyModelChanges(null);
     }
@@ -28,6 +29,8 @@ public class c_TPGrepDlg : c_TPBase<m_TPGrepDlg, v_TPGrepDlg>
         View.chkExclude.CheckedChanged -= chkExclude_CheckedChanged;
         View.chkCaseSensitive.CheckedChanged -= chkCaseSensitive_CheckedChanged;
         View.chkRegEx.CheckedChanged -= chkRegEx_CheckedChanged;
+        View.txtLinesBefore.TextChanged -= txtLinesBefore_TextChanged;
+        View.txtLinesAfter.TextChanged -= txtLinesAfter_TextChanged;
 
         base.DoDisconnectModel();
     }
@@ -58,6 +61,12 @@ public class c_TPGrepDlg : c_TPBase<m_TPGrepDlg, v_TPGrepDlg>
                 View.chkCaseSensitive.Enabled = !Model.RegEx;
             }
 
+            if (changes.Contains(LinesBefore))
+                View.txtLinesBefore.Text = Model.LinesBefore;
+
+            if (changes.Contains(LinesAfter))
+                View.txtLinesAfter.Text = Model.LinesAfter;
+
             UI.UnfocusCheckBox(View.txtSearchText, changes, ExcludeChanged, CaseSensitiveChanged, RegExChanged);
         });
     }
@@ -84,5 +93,17 @@ public class c_TPGrepDlg : c_TPBase<m_TPGrepDlg, v_TPGrepDlg>
     {
         if (modelSuppressor.Suppress) return;
         Model.RegEx = View.chkRegEx.Checked;
+    }
+
+    private void txtLinesBefore_TextChanged(object? sender, EventArgs e)
+    {
+        if (modelSuppressor.Suppress) return;
+        Model.LinesBefore = View.txtLinesBefore.Text;
+    }
+
+    private void txtLinesAfter_TextChanged(object? sender, EventArgs e)
+    {
+        if (modelSuppressor.Suppress) return;
+        Model.LinesAfter = View.txtLinesAfter.Text;
     }
 }

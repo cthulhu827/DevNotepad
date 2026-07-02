@@ -28,6 +28,20 @@ namespace DevNotepad.Dialogs.TPGrepDlg
 
             chkRegEx.ForeColor = UI.ClrFont;
             chkRegEx.Font = UI.Font14;
+
+            lblLinesBefore.ForeColor = UI.ClrFont;
+            lblLinesBefore.Font = UI.Font14;
+
+            txtLinesBefore.BackColor = UI.ClrChatBg;
+            txtLinesBefore.ForeColor = UI.ClrFont;
+            txtLinesBefore.Font = UI.Font14;
+
+            lblLinesAfter.ForeColor = UI.ClrFont;
+            lblLinesAfter.Font = UI.Font14;
+
+            txtLinesAfter.BackColor = UI.ClrChatBg;
+            txtLinesAfter.ForeColor = UI.ClrFont;
+            txtLinesAfter.Font = UI.Font14;
         }
     }
 }
