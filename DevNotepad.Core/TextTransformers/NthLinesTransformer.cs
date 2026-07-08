@@ -6,10 +6,10 @@ namespace DevNotepad.Core.TextTransformers
     [TextTransformer("Nth Lines", "f691835b-7948-48d1-974a-5cc11e560ec4")]
     public class NthLinesTransformer : BaseTextTransformer, IParametrizedTextTransformer, ISingleParameterTextTransformer
     {
-        [TextTransformer("Odd Lines", "33039a27-b89b-45f3-a4e0-16f66e951c20")]
+        [TextTransformer("Odd Lines (нечётные)", "33039a27-b89b-45f3-a4e0-16f66e951c20")]
         private static ITextTransformer BuildOdd() => new NthLinesTransformer { Parameter = "2/1", DontEditNew = true };
 
-        [TextTransformer("Even Lines", "9267e72f-9f3b-4407-9112-5291165e2425")]
+        [TextTransformer("Even Lines (чётные)", "9267e72f-9f3b-4407-9112-5291165e2425")]
         private static ITextTransformer BuildEven() => new NthLinesTransformer { Parameter = "2/2", DontEditNew = true };
 
         private string expression = string.Empty;
