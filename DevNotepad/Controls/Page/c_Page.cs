@@ -1,7 +1,6 @@
 ﻿using DevNotepad.Controls.WorkArea;
 using DevNotepad.Infrastructure;
 using Framework.MVC;
-using System.Linq;
 
 namespace DevNotepad.Controls.Page;
 
@@ -131,10 +130,13 @@ public class c_Page : MVC_Controller<m_Page, v_Page>, IKeyHandler
 
     #region IKeyHandler implementation
 
+    public bool IsFocused()
+    {
+        return View.ContainsFocus;
+    }
+
     public bool HandleKey(KeyEventArgs e)
     {
-        if (!View.ContainsFocus) return false;
-
         var result = true;
         if (e is { KeyCode: Keys.N, Control: true })
         {

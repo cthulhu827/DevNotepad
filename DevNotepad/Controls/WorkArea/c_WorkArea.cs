@@ -7,6 +7,13 @@ namespace DevNotepad.Controls.WorkArea;
 
 public class c_WorkArea : MVC_Controller<m_WorkArea, v_WorkArea>, IKeyHandler
 {
+    private readonly IKeyHandler transformersKeyHandler;
+
+    public c_WorkArea()
+    {
+        transformersKeyHandler = new TransformersKeyHandler(t => this.Model.AddItem(t));
+    }
+
     protected override void DoConnectModel()
     {
         base.DoConnectModel();
@@ -106,10 +113,13 @@ public class c_WorkArea : MVC_Controller<m_WorkArea, v_WorkArea>, IKeyHandler
 
     #region IKeyHandler implementation
 
+    public bool IsFocused()
+    {
+        return View.ContainsFocus;
+    }
+
     public bool HandleKey(KeyEventArgs e)
     {
-        if (!View.ContainsFocus) return false;
-
         var result = true;
         if (e.KeyCode == Keys.F1)
             View.txtSource.Text = Clipboard.GetText().TrimEnd();
@@ -117,13 +127,15 @@ public class c_WorkArea : MVC_Controller<m_WorkArea, v_WorkArea>, IKeyHandler
             Clipboard.SetText(View.txtTransformed.Text);
         else if (e.KeyCode == Keys.F4)
             View.pipeControl.Edit(View.ActiveControl);
-        if (e.KeyCode == Keys.Insert)
+        else if (e.KeyCode == Keys.Insert)
             AddTransformer();
         else
             result = false;
 
         return result;
     }
+
+    public IKeyHandler[] NestedKeyHandlers => new[] { transformersKeyHandler }; 
 
     #endregion
 

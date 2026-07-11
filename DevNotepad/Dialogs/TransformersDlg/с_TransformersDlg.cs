@@ -25,6 +25,16 @@ public class с_TransformersDlg : ModalDialogController<m_TransformersDlg, v_Tra
         var b = e.State.HasFlag(DrawItemState.Selected) ? UI.BrChatListSel : UI.BrChatListBg;
         g.FillRectangle(b, e.Bounds);
         g.DrawString(vm.Text, UI.Font14, UI.BrFont, new PointF(e.Bounds.X, e.Bounds.Y));
+        DrawShortCut(vm, g, e.Bounds);
+    }
+
+    private static void DrawShortCut(VM_TransformerForDlg viewModel, Graphics g, Rectangle itemBounds)
+    {
+        if (string.IsNullOrEmpty(viewModel.ShortCut)) return;
+
+        const int shortCutWidth = 64;
+        var shortcutRect = new RectangleF(itemBounds.Width - shortCutWidth, itemBounds.Y, shortCutWidth, itemBounds.Height);
+        g.DrawString(viewModel.ShortCut, UI.Font14, UI.BrFont, shortcutRect);
     }
 
     private void txtSearch_KeyDown(object? sender, KeyEventArgs e)

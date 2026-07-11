@@ -14,5 +14,7 @@ namespace DevNotepad.Core.TextTransformers
         public Guid Id { get; }
 
         public string Caption { get; }
+
+        public string ShortCut { get; set; } = "";
     }
 }

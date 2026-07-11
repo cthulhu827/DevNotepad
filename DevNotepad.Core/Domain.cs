@@ -11,6 +11,8 @@ namespace DevNotepad.Core
     {
         private static readonly Lazy<TransformerInfo[]> all = new Lazy<TransformerInfo[]>(BuildAll);
 
+        public static IShortcutConverter? ShortcutConverter { get; set; }
+
         private static TransformerInfo[] BuildAll()
         {
             var result = new List<TransformerInfo>();
@@ -30,7 +32,8 @@ namespace DevNotepad.Core
                 var attr = memberInfo.GetCustomAttribute<TextTransformerAttribute>();
                 if (attr != null)
                 {
-                    result.Add(new TransformerInfo(attr.Id, attr.Caption, memberInfo));
+                    var shortCut = ShortcutConverter?.Convert(attr.ShortCut) ?? 0;
+                    result.Add(new TransformerInfo(attr.Id, attr.Caption, memberInfo, shortCut, attr.ShortCut));
                 }
             }
         }

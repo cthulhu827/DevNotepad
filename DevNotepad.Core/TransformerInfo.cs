@@ -9,15 +9,19 @@ namespace DevNotepad.Core
     {
         private readonly MemberInfo memberInfo;
 
-        public TransformerInfo(Guid id, string caption, MemberInfo memberInfo)
+        public TransformerInfo(Guid id, string caption, MemberInfo memberInfo, int shortCut, string shortCutStr)
         {
             this.memberInfo = memberInfo;
             Id = id;
             Caption = caption;
+            ShortCut = shortCut;
+            ShortCutStr = shortCutStr;
         }
 
         public Guid Id { get; }
         public string Caption { get; }
+        public int ShortCut { get; }
+        public string ShortCutStr { get; }
 
         public ITextTransformer Build()
         {

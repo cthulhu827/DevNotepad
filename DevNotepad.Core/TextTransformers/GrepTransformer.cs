@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace DevNotepad.Core.TextTransformers
 {
-    [TextTransformer("Grep", "acbf51fd-f580-42b0-a6d3-08ba127a3062")]
+    [TextTransformer("Grep", "acbf51fd-f580-42b0-a6d3-08ba127a3062", ShortCut = "Alt+G")]
     public class GrepTransformer : BaseTextTransformer, IParametrizedTextTransformer
     {
         [TextTransformer("Exclude", "19d89fa0-4155-4500-8d0d-47d4d5ef6fad")]

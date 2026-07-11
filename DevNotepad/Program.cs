@@ -1,4 +1,5 @@
 using DevNotepad.Controls.MainWindow;
+using DevNotepad.Core;
 using DevNotepad.Infrastructure;
 using Microsoft.Extensions.Configuration;
 
@@ -19,6 +20,8 @@ namespace DevNotepad
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: false)
                 .Build();
             Settings = configuration.GetSection("AppSettings").Get<AppSettings>() ?? new AppSettings();
+
+            Domain.ShortcutConverter = new KeysShortcutConverter();
 
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
