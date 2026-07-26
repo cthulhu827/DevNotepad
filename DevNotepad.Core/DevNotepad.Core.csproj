@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DtConverter.Core\DtConverter.Core.csproj" />
     <ProjectReference Include="..\Framework\Framework\Framework.csproj" />
   </ItemGroup>
 

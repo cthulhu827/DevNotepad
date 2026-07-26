@@ -29,6 +29,11 @@ public class c_TPNthLinesTransformerDlg : c_TPSingleParamDlg<m_TPSingleParamDlg<
 {
 }
 
+[TPEditor(typeof(DateTimeTransformer))]
+public class c_DateTimeTransformerDlg : c_TPSingleParamDlg<m_TPSingleParamDlg<DateTimeTransformer>>
+{
+}
+
 public class c_TPSingleParamDlg<TModel> : c_TPBase<TModel, v_TPSingleParamDlg>
     where TModel : MVC_Model, ITPDlgModel, ISingleParameterTextTransformer, new()
 {
