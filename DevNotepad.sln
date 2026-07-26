@@ -17,6 +17,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.Domain", "Framewo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Framework.UI", "Framework\Framework.UI\Framework.UI.csproj", "{41473DDC-CF2C-49A1-9347-5821F846C958}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DtConverter.Core", "DtConverter.Core\DtConverter.Core.csproj", "{8900D5FF-2150-4FBA-BFD1-4CBDEF0ABCE0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DtConverter.Tests", "DtConverter.Tests\DtConverter.Tests.csproj", "{01B75C97-BBBB-47AA-9075-3D4947322885}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +51,14 @@ Global
 		{41473DDC-CF2C-49A1-9347-5821F846C958}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{41473DDC-CF2C-49A1-9347-5821F846C958}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{41473DDC-CF2C-49A1-9347-5821F846C958}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8900D5FF-2150-4FBA-BFD1-4CBDEF0ABCE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8900D5FF-2150-4FBA-BFD1-4CBDEF0ABCE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8900D5FF-2150-4FBA-BFD1-4CBDEF0ABCE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8900D5FF-2150-4FBA-BFD1-4CBDEF0ABCE0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01B75C97-BBBB-47AA-9075-3D4947322885}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01B75C97-BBBB-47AA-9075-3D4947322885}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01B75C97-BBBB-47AA-9075-3D4947322885}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01B75C97-BBBB-47AA-9075-3D4947322885}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
