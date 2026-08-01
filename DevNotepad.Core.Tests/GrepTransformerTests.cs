@@ -1,3 +1,4 @@
+using System;
 using DevNotepad.Core.TextTransformers;
 using NUnit.Framework;
 
@@ -159,6 +160,15 @@ namespace DevNotepad.Core.Tests.TextTransformers
             Assert.That(result, Is.EqualTo(new[] { "abc", "def", "ghi" }));
         }
 
+        [Test]
+        public void TestExcludeIgnoresRegExGroup()
+        {
+            var transformer = new GrepTransformer(@"v(\d)") { Exclude = true, RegEx = true };
+            var lines = new[] { "id1", "v1", "id2", "v2", "id3", "v1" };
+            var result = transformer.Transform(lines);
+            Assert.That(result, Is.EqualTo(new[] { "id1", "id2", "id3" }));
+        }
+
         #endregion
 
         #region Exclude mode
@@ -200,13 +210,21 @@ namespace DevNotepad.Core.Tests.TextTransformers
         }
 
         [Test]
-        public void Transform_Exclude_IgnoresLinesBeforeAndAfter()
+        public void TestExcludeWithLinesAround()
         {
-            var transformer = new GrepTransformer("bbb") { Exclude = true, LinesBefore = 2, LinesAfter = 2 };
-            var lines = new[] { "aaa", "before1", "bbb", "after1", "ccc" };
+            var transformer = new GrepTransformer("v2") { LinesBefore = 1, Exclude = true };
+            var lines = new[] { "id1", "v1", "id2", "v2", "id3", "v1" };
             var result = transformer.Transform(lines);
-            // Exclude mode ignores LinesBefore/LinesAfter, so only non-matching lines are returned
-            Assert.That(result, Is.EqualTo(new[] { "aaa", "before1", "after1", "ccc" }));
+            Assert.That(result, Is.EqualTo(new[] { "id1", "v1", "", "id3", "v1" }));
+        }
+
+        [Test]
+        public void TestPassedEmptyLineInTheEndAreSaved()
+        {
+            var transformer = new GrepTransformer("v2") { LinesBefore = 1, Exclude = true };
+            var lines = new[] { "id1", "v1", "id2", "v2", "id3", "v1", "", "" };
+            var result = transformer.Transform(lines);
+            Assert.That(result, Is.EqualTo(new[] { "id1", "v1", "", "id3", "v1", "", "" }));
         }
 
         #endregion
@@ -219,7 +237,7 @@ namespace DevNotepad.Core.Tests.TextTransformers
             var transformer = new GrepTransformer("match") { LinesBefore = 2 };
             var lines = new[] { "a", "b", "c", "match", "d", "e" };
             var result = transformer.Transform(lines);
-            Assert.That(result, Is.EqualTo(new[] { "b", "c", "match", "" }));
+            Assert.That(result, Is.EqualTo(new[] { "b", "c", "match" }));
         }
 
         [Test]
@@ -228,7 +246,7 @@ namespace DevNotepad.Core.Tests.TextTransformers
             var transformer = new GrepTransformer("match") { LinesAfter = 2 };
             var lines = new[] { "a", "b", "match", "c", "d", "e" };
             var result = transformer.Transform(lines);
-            Assert.That(result, Is.EqualTo(new[] { "match", "c", "d", "" }));
+            Assert.That(result, Is.EqualTo(new[] { "match", "c", "d" }));
         }
 
         [Test]
@@ -237,7 +255,7 @@ namespace DevNotepad.Core.Tests.TextTransformers
             var transformer = new GrepTransformer("match") { LinesBefore = 1, LinesAfter = 1 };
             var lines = new[] { "a", "before", "match", "after", "b" };
             var result = transformer.Transform(lines);
-            Assert.That(result, Is.EqualTo(new[] { "before", "match", "after", "" }));
+            Assert.That(result, Is.EqualTo(new[] { "before", "match", "after" }));
         }
 
         [Test]
@@ -246,7 +264,7 @@ namespace DevNotepad.Core.Tests.TextTransformers
             var transformer = new GrepTransformer("match") { LinesBefore = 10 };
             var lines = new[] { "a", "match", "b" };
             var result = transformer.Transform(lines);
-            Assert.That(result, Is.EqualTo(new[] { "a", "match", "" }));
+            Assert.That(result, Is.EqualTo(new[] { "a", "match" }));
         }
 
         [Test]
@@ -264,7 +282,7 @@ namespace DevNotepad.Core.Tests.TextTransformers
             var transformer = new GrepTransformer("match") { LinesBefore = 1, LinesAfter = 1 };
             var lines = new[] { "a", "x1", "match", "y1", "b", "x2", "match", "y2", "c" };
             var result = transformer.Transform(lines);
-            Assert.That(result, Is.EqualTo(new[] { "x1", "match", "y1", "", "x2", "match", "y2", "" }));
+            Assert.That(result, Is.EqualTo(new[] { "x1", "match", "y1", "", "x2", "match", "y2" }));
         }
 
         [Test]
@@ -293,7 +311,7 @@ namespace DevNotepad.Core.Tests.TextTransformers
             var transformer = new GrepTransformer("match") { LinesBefore = 0, LinesAfter = 1 };
             var lines = new[] { "a", "match", "b", "c" };
             var result = transformer.Transform(lines);
-            Assert.That(result, Is.EqualTo(new[] { "match", "b", "" }));
+            Assert.That(result, Is.EqualTo(new[] { "match", "b" }));
         }
 
         [Test]
@@ -302,7 +320,16 @@ namespace DevNotepad.Core.Tests.TextTransformers
             var transformer = new GrepTransformer("match") { LinesBefore = 1, LinesAfter = 0 };
             var lines = new[] { "a", "match", "b", "c" };
             var result = transformer.Transform(lines);
-            Assert.That(result, Is.EqualTo(new[] { "a", "match", "" }));
+            Assert.That(result, Is.EqualTo(new[] { "a", "match" }));
+        }
+
+        [Test]
+        public void TestNoEmptyLineInTheEnd()
+        {
+            var transformer = new GrepTransformer("bbb") { LinesBefore = 1 };
+            var lines = new[] { "aaa", "bbb", "ccc", "bbb", "ddd", "eee", "fff", "bbb", "ggg" };
+            var result = transformer.Transform(lines);
+            Assert.That(result, Is.EqualTo(new[] { "aaa", "bbb", "ccc", "bbb", "", "fff", "bbb" }));
         }
 
         #endregion
@@ -315,7 +342,7 @@ namespace DevNotepad.Core.Tests.TextTransformers
             var transformer = new GrepTransformer(@"\d+") { RegEx = true, LinesBefore = 1, LinesAfter = 1 };
             var lines = new[] { "a", "b", "123", "c", "d" };
             var result = transformer.Transform(lines);
-            Assert.That(result, Is.EqualTo(new[] { "b", "123", "c", "" }));
+            Assert.That(result, Is.EqualTo(new[] { "b", "123", "c" }));
         }
 
         [Test]
@@ -334,7 +361,7 @@ namespace DevNotepad.Core.Tests.TextTransformers
             var transformer = new GrepTransformer("match") { LinesBefore = 2 };
             var lines = new[] { "match", "a", "b" };
             var result = transformer.Transform(lines);
-            Assert.That(result, Is.EqualTo(new[] { "match", "" }));
+            Assert.That(result, Is.EqualTo(new[] { "match" }));
         }
 
         [Test]
@@ -344,6 +371,165 @@ namespace DevNotepad.Core.Tests.TextTransformers
             var lines = new[] { "a", "b", "match" };
             var result = transformer.Transform(lines);
             Assert.That(result, Is.EqualTo(new[] { "match" }));
+        }
+
+        #endregion
+
+        #region IntegrationPluginVersion
+
+        [Test]
+        public void IntegrationPluginVersion_FindNew()
+        {
+            var transformer = new GrepTransformer("9.6.6") { LinesBefore = 1 };
+            var lines = new[]
+            {
+                "7c57f3ca-17df-4c88-863e-3b6f3bfb8b1a",
+                "9.6.6.5221243",
+                "0fa6354b-fc1b-4648-b163-ac192cd5cbbb",
+                "9.6.6.5221243",
+                "27b65426-1ee3-45f4-8c97-bdb7f5fad313",
+                "8.8.0.883422",
+                "93e8c474-82dc-41ba-a272-08793e8fb68a",
+                "9.6.6.5221243",
+                "4cda634f-7bf0-4755-97ad-09744ac3bb52",
+                "9.6.6.5221243",
+                "9aa7cec8-3faa-4c8e-8c39-212edd3aa67d",
+                "9.6.6.5221243",
+                "bb35751c-a8dc-4b56-a669-e618f5eece7a",
+                "7.8.6.249882",
+                "9157c34b-85d4-403d-a0eb-9274038e5003",
+                "9.6.6.5221243"
+            };
+            var result = transformer.Transform(lines);
+            var expected = new[]
+            {
+                "7c57f3ca-17df-4c88-863e-3b6f3bfb8b1a",
+                "9.6.6.5221243",
+                "0fa6354b-fc1b-4648-b163-ac192cd5cbbb",
+                "9.6.6.5221243",
+                "",
+                "93e8c474-82dc-41ba-a272-08793e8fb68a",
+                "9.6.6.5221243",
+                "4cda634f-7bf0-4755-97ad-09744ac3bb52",
+                "9.6.6.5221243",
+                "9aa7cec8-3faa-4c8e-8c39-212edd3aa67d",
+                "9.6.6.5221243",
+                "",
+                "9157c34b-85d4-403d-a0eb-9274038e5003",
+                "9.6.6.5221243"
+            };
+            Assert.That(result, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void IntegrationPluginVersion_FindNewNoEmptyLines()
+        {
+            var transformer = new GrepTransformer("9.6.6") { LinesBefore = 1, DoNotSeparate = true };
+            var lines = new[]
+            {
+                "7c57f3ca-17df-4c88-863e-3b6f3bfb8b1a",
+                "9.6.6.5221243",
+                "0fa6354b-fc1b-4648-b163-ac192cd5cbbb",
+                "9.6.6.5221243",
+                "27b65426-1ee3-45f4-8c97-bdb7f5fad313",
+                "8.8.0.883422",
+                "93e8c474-82dc-41ba-a272-08793e8fb68a",
+                "9.6.6.5221243",
+                "4cda634f-7bf0-4755-97ad-09744ac3bb52",
+                "9.6.6.5221243",
+                "9aa7cec8-3faa-4c8e-8c39-212edd3aa67d",
+                "9.6.6.5221243",
+                "bb35751c-a8dc-4b56-a669-e618f5eece7a",
+                "7.8.6.249882",
+                "9157c34b-85d4-403d-a0eb-9274038e5003",
+                "9.6.6.5221243"
+            };
+            var result = transformer.Transform(lines);
+            var expected = new[]
+            {
+                "7c57f3ca-17df-4c88-863e-3b6f3bfb8b1a",
+                "9.6.6.5221243",
+                "0fa6354b-fc1b-4648-b163-ac192cd5cbbb",
+                "9.6.6.5221243",
+                "93e8c474-82dc-41ba-a272-08793e8fb68a",
+                "9.6.6.5221243",
+                "4cda634f-7bf0-4755-97ad-09744ac3bb52",
+                "9.6.6.5221243",
+                "9aa7cec8-3faa-4c8e-8c39-212edd3aa67d",
+                "9.6.6.5221243",
+                "9157c34b-85d4-403d-a0eb-9274038e5003",
+                "9.6.6.5221243"
+            };
+            Assert.That(result, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void IntegrationPluginVersion_FindOld()
+        {
+            var transformer = new GrepTransformer("9.6.6") { LinesBefore = 1, Exclude = true };
+            var lines = new[]
+            {
+                "7c57f3ca-17df-4c88-863e-3b6f3bfb8b1a",
+                "9.6.6.5221243",
+                "0fa6354b-fc1b-4648-b163-ac192cd5cbbb",
+                "9.6.6.5221243",
+                "27b65426-1ee3-45f4-8c97-bdb7f5fad313",
+                "8.8.0.883422",
+                "93e8c474-82dc-41ba-a272-08793e8fb68a",
+                "9.6.6.5221243",
+                "4cda634f-7bf0-4755-97ad-09744ac3bb52",
+                "9.6.6.5221243",
+                "9aa7cec8-3faa-4c8e-8c39-212edd3aa67d",
+                "9.6.6.5221243",
+                "bb35751c-a8dc-4b56-a669-e618f5eece7a",
+                "7.8.6.249882",
+                "9157c34b-85d4-403d-a0eb-9274038e5003",
+                "9.6.6.5221243"
+            };
+            var result = transformer.Transform(lines);
+            var expected = new[]
+            {
+                "27b65426-1ee3-45f4-8c97-bdb7f5fad313",
+                "8.8.0.883422",
+                "",
+                "bb35751c-a8dc-4b56-a669-e618f5eece7a",
+                "7.8.6.249882",
+            };
+            Assert.That(result, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void IntegrationPluginVersion_FindOldNoEmptyLines()
+        {
+            var transformer = new GrepTransformer("9.6.6") { LinesBefore = 1, Exclude = true, DoNotSeparate = true };
+            var lines = new[]
+            {
+                "7c57f3ca-17df-4c88-863e-3b6f3bfb8b1a",
+                "9.6.6.5221243",
+                "0fa6354b-fc1b-4648-b163-ac192cd5cbbb",
+                "9.6.6.5221243",
+                "27b65426-1ee3-45f4-8c97-bdb7f5fad313",
+                "8.8.0.883422",
+                "93e8c474-82dc-41ba-a272-08793e8fb68a",
+                "9.6.6.5221243",
+                "4cda634f-7bf0-4755-97ad-09744ac3bb52",
+                "9.6.6.5221243",
+                "9aa7cec8-3faa-4c8e-8c39-212edd3aa67d",
+                "9.6.6.5221243",
+                "bb35751c-a8dc-4b56-a669-e618f5eece7a",
+                "7.8.6.249882",
+                "9157c34b-85d4-403d-a0eb-9274038e5003",
+                "9.6.6.5221243"
+            };
+            var result = transformer.Transform(lines);
+            var expected = new[]
+            {
+                "27b65426-1ee3-45f4-8c97-bdb7f5fad313",
+                "8.8.0.883422",
+                "bb35751c-a8dc-4b56-a669-e618f5eece7a",
+                "7.8.6.249882",
+            };
+            Assert.That(result, Is.EqualTo(expected));
         }
 
         #endregion

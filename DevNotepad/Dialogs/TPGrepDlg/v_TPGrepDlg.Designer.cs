@@ -37,18 +37,19 @@
             txtLinesAfter = new TextBox();
             lblLinesBefore = new Label();
             lblLinesAfter = new Label();
+            chkDoNotSeparate = new CheckBox();
             SuspendLayout();
             // 
             // btnOK
             // 
-            btnOK.Location = new Point(135, 279);
+            btnOK.Location = new Point(135, 311);
             btnOK.Margin = new Padding(6, 5, 6, 5);
             btnOK.Size = new Size(146, 45);
             btnOK.TabIndex = 9;
             // 
             // btnCancel
             // 
-            btnCancel.Location = new Point(289, 279);
+            btnCancel.Location = new Point(289, 311);
             btnCancel.Margin = new Padding(6, 5, 6, 5);
             btnCancel.Size = new Size(146, 45);
             btnCancel.TabIndex = 10;
@@ -131,11 +132,22 @@
             lblLinesAfter.TabIndex = 7;
             lblLinesAfter.Text = "Lines &after:";
             // 
+            // chkDoNotSeparate
+            // 
+            chkDoNotSeparate.AutoSize = true;
+            chkDoNotSeparate.Location = new Point(136, 264);
+            chkDoNotSeparate.Name = "chkDoNotSeparate";
+            chkDoNotSeparate.Size = new Size(165, 29);
+            chkDoNotSeparate.TabIndex = 11;
+            chkDoNotSeparate.Text = "Do not &separate";
+            chkDoNotSeparate.UseVisualStyleBackColor = true;
+            // 
             // v_TPGrepDlg
             // 
             AutoScaleDimensions = new SizeF(11F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(443, 332);
+            ClientSize = new Size(443, 364);
+            Controls.Add(chkDoNotSeparate);
             Controls.Add(lblLinesAfter);
             Controls.Add(lblLinesBefore);
             Controls.Add(txtLinesAfter);
@@ -160,6 +172,7 @@
             Controls.SetChildIndex(txtLinesAfter, 0);
             Controls.SetChildIndex(lblLinesBefore, 0);
             Controls.SetChildIndex(lblLinesAfter, 0);
+            Controls.SetChildIndex(chkDoNotSeparate, 0);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -175,5 +188,6 @@
         internal TextBox txtLinesAfter;
         private Label lblLinesBefore;
         private Label lblLinesAfter;
+        internal CheckBox chkDoNotSeparate;
     }
 }

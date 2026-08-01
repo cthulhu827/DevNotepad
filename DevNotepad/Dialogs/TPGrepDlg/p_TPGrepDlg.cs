@@ -6,6 +6,7 @@ public enum p_TPGrepDlg
     ExcludeChanged,
     CaseSensitiveChanged,
     RegExChanged,
-    LinesBefore,
-    LinesAfter,
+    LinesBeforeChanged,
+    LinesAfterChanged,
+    DoNotSeparateChanged,
 }

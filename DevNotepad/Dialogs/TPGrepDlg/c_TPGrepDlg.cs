@@ -19,6 +19,7 @@ public class c_TPGrepDlg : c_TPBase<m_TPGrepDlg, v_TPGrepDlg>
         View.chkRegEx.CheckedChanged += chkRegEx_CheckedChanged;
         View.txtLinesBefore.TextChanged += txtLinesBefore_TextChanged;
         View.txtLinesAfter.TextChanged += txtLinesAfter_TextChanged;
+        View.chkDoNotSeparate.CheckedChanged += chkDoNotSeparate_CheckedChanged;
 
         ApplyModelChanges(null);
     }
@@ -31,6 +32,7 @@ public class c_TPGrepDlg : c_TPBase<m_TPGrepDlg, v_TPGrepDlg>
         View.chkRegEx.CheckedChanged -= chkRegEx_CheckedChanged;
         View.txtLinesBefore.TextChanged -= txtLinesBefore_TextChanged;
         View.txtLinesAfter.TextChanged -= txtLinesAfter_TextChanged;
+        View.chkDoNotSeparate.CheckedChanged -= chkDoNotSeparate_CheckedChanged;
 
         base.DoDisconnectModel();
     }
@@ -61,11 +63,22 @@ public class c_TPGrepDlg : c_TPBase<m_TPGrepDlg, v_TPGrepDlg>
                 View.chkCaseSensitive.Enabled = !Model.RegEx;
             }
 
-            if (changes.Contains(LinesBefore))
+            if (changes.Contains(LinesBeforeChanged))
+            {
                 View.txtLinesBefore.Text = Model.LinesBefore;
+                View.chkDoNotSeparate.Enabled = Model.LinesAfter != "0" || Model.LinesBefore != "0";
+            }
 
-            if (changes.Contains(LinesAfter))
+            if (changes.Contains(LinesAfterChanged))
+            {
                 View.txtLinesAfter.Text = Model.LinesAfter;
+                View.chkDoNotSeparate.Enabled = Model.LinesAfter != "0" || Model.LinesBefore != "0";
+            }
+
+            if (changes.Contains(DoNotSeparateChanged))
+            {
+                View.chkDoNotSeparate.Checked = Model.DoNotSeparate;
+            }
 
             UI.UnfocusCheckBox(View.txtSearchText, changes, ExcludeChanged, CaseSensitiveChanged, RegExChanged);
         });
@@ -105,5 +118,11 @@ public class c_TPGrepDlg : c_TPBase<m_TPGrepDlg, v_TPGrepDlg>
     {
         if (modelSuppressor.Suppress) return;
         Model.LinesAfter = View.txtLinesAfter.Text;
+    }
+
+    private void chkDoNotSeparate_CheckedChanged(object? sender, EventArgs e)
+    {
+        if (modelSuppressor.Suppress) return;
+        Model.DoNotSeparate = View.chkDoNotSeparate.Checked;
     }
 }

@@ -42,6 +42,9 @@ namespace DevNotepad.Dialogs.TPGrepDlg
             txtLinesAfter.BackColor = UI.ClrChatBg;
             txtLinesAfter.ForeColor = UI.ClrFont;
             txtLinesAfter.Font = UI.Font14;
+
+            chkDoNotSeparate.ForeColor = UI.ClrFont;
+            chkDoNotSeparate.Font = UI.Font14;
         }
     }
 }

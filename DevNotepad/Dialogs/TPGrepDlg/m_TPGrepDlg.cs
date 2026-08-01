@@ -34,7 +34,7 @@ public class m_TPGrepDlg : m_TPBase<GrepTransformer, p_TPGrepDlg>
         get => Transformer.LinesBefore.ToString();
         set => eventRaiser.Raise(
             () => Transformer.LinesBefore = int.TryParse(value, out var intValue) ? intValue : 0,
-            p_TPGrepDlg.LinesBefore);
+            p_TPGrepDlg.LinesBeforeChanged);
     }
 
     public string LinesAfter
@@ -42,6 +42,12 @@ public class m_TPGrepDlg : m_TPBase<GrepTransformer, p_TPGrepDlg>
         get => Transformer.LinesAfter.ToString();
         set => eventRaiser.Raise(
             () => Transformer.LinesAfter = int.TryParse(value, out var intValue) ? intValue : 0,
-            p_TPGrepDlg.LinesAfter);
+            p_TPGrepDlg.LinesAfterChanged);
+    }
+
+    public bool DoNotSeparate
+    {
+        get => Transformer.DoNotSeparate;
+        set => eventRaiser.Raise(() => Transformer.DoNotSeparate = value, p_TPGrepDlg.DoNotSeparateChanged);
     }
 }

@@ -30,6 +30,7 @@ namespace DevNotepad.Core.TextTransformers
         public bool RegEx { get; set; }
         public int LinesBefore { get; set; }
         public int LinesAfter { get; set; }
+        public bool DoNotSeparate { get; set; }
 
         public override string[] Transform(string[] lines)
         {
@@ -47,17 +48,11 @@ namespace DevNotepad.Core.TextTransformers
                 return new[] { "Invalid RegEx: " + SearchText };
             }
 
-            // Если Exclude, то не учитываем LinesBefore / LinesAfter.
-            // Просто инвертируем признак у найденных строк и возвращаем результат.
-            if (Exclude)
-            {
-                Inverse(needReturn);
-                return BuildResult(lines, needReturn, null);
-            }
-
-            // Если опции Exclude нет, то учитываем LinesBefore / LinesAfter:
-            // проставляем признак Include строкам до и после найденных.
             MarkLinesAround(needReturn);
+
+            InverseIfExclude(needReturn);
+
+            AddEmptyLinesBetweenFoundGroups(needReturn);
 
             // Возвращаем результат.
             return BuildResult(lines, needReturn, regExGroups);
@@ -87,6 +82,11 @@ namespace DevNotepad.Core.TextTransformers
             for (int i = 0; i < needReturn.Length; i++)
                 if (needReturn[i] == LineResult.IncludeAround)
                     needReturn[i] = LineResult.Include;
+        }
+
+        private void AddEmptyLinesBetweenFoundGroups(LineResult[] needReturn)
+        {
+            if (LinesAfter == 0 && LinesBefore == 0 || DoNotSeparate) return;
 
             // После каждой из сформированных групп строк добавляем пустую строку.
             // Если группы пересекаются или идут подряд, то пустая строка не добавляется.
@@ -96,6 +96,19 @@ namespace DevNotepad.Core.TextTransformers
                 if (needReturn[i] == LineResult.Exclude &&
                     (prev == LineResult.Include || prev == LineResult.IncludeRegEx))
                     needReturn[i] = LineResult.Empty;
+            }
+
+            // Убираем незначащие строки в конце. Exclude оставляем как есть,
+            // а Empty заменяем на Exclude.
+            for (int i = needReturn.Length - 1; i >= 0; i--)
+            {
+                if (needReturn[i] == LineResult.Exclude)
+                    continue;
+
+                if (needReturn[i] == LineResult.Empty)
+                    needReturn[i] = LineResult.Exclude;
+                else
+                    break;
             }
         }
 
@@ -126,8 +139,10 @@ namespace DevNotepad.Core.TextTransformers
             return result.ToArray();
         }
 
-        private void Inverse(LineResult[] needReturn)
+        private void InverseIfExclude(LineResult[] needReturn)
         {
+            if (!Exclude) return;
+
             for (int i = 0; i < needReturn.Length; i++)
             {
                 if (needReturn[i] == LineResult.Exclude)
@@ -139,14 +154,14 @@ namespace DevNotepad.Core.TextTransformers
 
         public object SaveState()
         {
-            return new Tuple<string, bool, bool, bool, int, int>(
-                SearchText, Exclude, CaseSensitive, RegEx, LinesBefore, LinesAfter);
+            return new Tuple<string, bool, bool, bool, int, int, bool>(
+                SearchText, Exclude, CaseSensitive, RegEx, LinesBefore, LinesAfter, DoNotSeparate);
         }
 
         public void RestoreState(object state)
         {
-            (SearchText, Exclude, CaseSensitive, RegEx, LinesBefore, LinesAfter)
-                = (Tuple<string, bool, bool, bool, int, int>)state;
+            (SearchText, Exclude, CaseSensitive, RegEx, LinesBefore, LinesAfter, DoNotSeparate)
+                = (Tuple<string, bool, bool, bool, int, int, bool>)state;
         }
 
         private LineResult[] SearchBySearchText(string[] lines, IDictionary<int, string>? regExGroups)
