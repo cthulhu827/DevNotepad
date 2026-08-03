@@ -136,6 +136,8 @@ public class LexicalParser
                 return DateTimeWrapperFormat.EpochMs;
             case Modifier.Pg:
                 return DateTimeWrapperFormat.Pg;
+            case Modifier.Js:
+                return DateTimeWrapperFormat.Json;
             default:
                 throw new ArgumentOutOfRangeException(nameof(modifier), modifier, null);
         }

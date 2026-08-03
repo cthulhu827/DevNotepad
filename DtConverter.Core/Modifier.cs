@@ -8,6 +8,7 @@ public enum Modifier
     E,
     Ee,
     Pg,
+    Js,
 
     // Time modifiers
     Hms,

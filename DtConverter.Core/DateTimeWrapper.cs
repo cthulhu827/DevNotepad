@@ -57,6 +57,11 @@ namespace DtConverter
                         s += "." + dt.Millisecond.ToString("D3");
                     return s;
                 }
+                case DateTimeWrapperFormat.Json:
+                {
+                    var dt = DateTimeOffset.FromUnixTimeMilliseconds(Value).UtcDateTime;
+                    return dt.ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+                }
                 default:
                     throw new ArgumentOutOfRangeException(nameof(format), format, null);
             }

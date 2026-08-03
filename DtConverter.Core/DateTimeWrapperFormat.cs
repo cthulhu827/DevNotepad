@@ -6,6 +6,7 @@
         Msk,
         Epoch,
         EpochMs,
-        Pg
+        Pg,
+        Json
     }
 }
