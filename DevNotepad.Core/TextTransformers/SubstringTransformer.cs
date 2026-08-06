@@ -18,10 +18,10 @@ namespace DevNotepad.Core.TextTransformers
         [TextTransformer("Take End", "8b9b532c-6615-4b61-a4d7-4243f5323d19")]
         private static ITextTransformer BuildTakeEnd() => new SubstringTransformer(string.Empty, SubstringType.TakeEnd);
 
-        [TextTransformer("Take Before", "d92e6110-b1ed-4179-b970-92bd1a6ebccd")]
+        [TextTransformer("Take Before", "d92e6110-b1ed-4179-b970-92bd1a6ebccd", ShortCut = "Alt+B")]
         private static ITextTransformer BuildTakeBefore() => new SubstringTransformer(string.Empty, SubstringType.TakeBefore);
 
-        [TextTransformer("Take After", "ed5639df-6c54-4c01-bc96-60ef84d9e94e")]
+        [TextTransformer("Take After", "ed5639df-6c54-4c01-bc96-60ef84d9e94e", ShortCut = "Alt+A")]
         private static ITextTransformer BuildTakeAfter() => new SubstringTransformer(string.Empty, SubstringType.TakeAfter);
 
         [TextTransformer("File names for review", "ab9af1c7-2355-4d58-8f2b-8fdf9b0114cd")]
