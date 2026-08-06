@@ -60,6 +60,10 @@ public class DateTimeWrapperTests
     [TestCase("18:37 - 16:40", "1h 57m", TT.TimeSpan, TT.Minus, TT.TimeSpan)]
     [TestCase("now - 2m msk", "04.05.2026 21:53:00 msk", TT.Now, TT.Minus, TT.Human, TT.Modifier)]
     [TestCase("18:37 - 1h 7m + 2h 20m 10m ts", "20:00:00", TT.TimeSpan, TT.Minus, TT.Human, TT.Human, TT.Plus, TT.Human, TT.Human, TT.Human, TT.Modifier)]
+
+    [TestCase("-- Full line comment", "")]
+    [TestCase("1d 3h -- Part line comment", "1d 3h", TT.Human, TT.Human)]
+    [TestCase("  1d 4h ", "1d 4h", TT.Human, TT.Human)]
     // @formatter:on
     public void TryParse_EpochSeconds_ReturnsCorrectUtcString(string inputString, string expected,
         params TokenType[] expectedTokens)

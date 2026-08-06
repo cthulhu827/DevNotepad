@@ -23,6 +23,13 @@ public class LexicalParser
 
     private Token[] GetTokens(string line)
     {
+        var commentStart = line.IndexOf("--");
+        if (commentStart != -1) line = line.Substring(0, commentStart);
+
+        line = line.Trim();
+
+        if (string.IsNullOrWhiteSpace(line)) return Array.Empty<Token>();
+
         var tokensStr = line.Split(' ');
         var result = new List<Token>();
         foreach (var token in tokensStr)
@@ -40,6 +47,7 @@ public class LexicalParser
     public IWrapper? Parse(IWrapper? prev, string line, out Token[] tokens)
     {
         tokens = GetTokens(line);
+        if (!tokens.Any()) return new EmptyWrapper();
 
         var (unprocessed, modifierTokens) = GetModifiers(tokens);
         var (dateTokens, unprocessed2) = GetDate(unprocessed);
