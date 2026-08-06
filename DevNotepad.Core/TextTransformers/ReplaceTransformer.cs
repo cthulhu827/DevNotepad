@@ -7,7 +7,8 @@ namespace DevNotepad.Core.TextTransformers
     {
         protected override string TransformLine(string line)
         {
-            return string.IsNullOrWhiteSpace(line) || string.IsNullOrWhiteSpace(OldValue)
+            // IsNullOrWhiteSpace(OldValue) не подходит, т.к. иногда нужно искать по пробелу.
+            return string.IsNullOrWhiteSpace(line) || string.IsNullOrEmpty(OldValue)
                 ? line
                 : line.Replace(OldValue, NewValue);
         }

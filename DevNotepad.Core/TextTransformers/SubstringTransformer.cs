@@ -54,7 +54,8 @@ namespace DevNotepad.Core.TextTransformers
 
         protected override string TransformLine(string line)
         {
-            if (string.IsNullOrWhiteSpace(Limit) || string.IsNullOrWhiteSpace(line)) return line;
+            // IsNullOrWhiteSpace(Limit) не подходит, т.к. иногда нужно искать по пробелу.
+            if (string.IsNullOrEmpty(Limit) || string.IsNullOrWhiteSpace(line)) return line;
 
             return Type switch
             {
