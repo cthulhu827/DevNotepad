@@ -63,7 +63,7 @@ public class DateTimeWrapperTests
 
     [TestCase("-- Full line comment", "")]
     [TestCase("1d 3h -- Part line comment", "1d 3h", TT.Human, TT.Human)]
-    [TestCase("  1d 4h ", "1d 4h", TT.Human, TT.Human)]
+    [TestCase("  1d   4h  15m ", "1d 4h 15m", TT.Human, TT.Human, TT.Human)]
     // @formatter:on
     public void TryParse_EpochSeconds_ReturnsCorrectUtcString(string inputString, string expected,
         params TokenType[] expectedTokens)

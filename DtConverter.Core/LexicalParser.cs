@@ -30,7 +30,7 @@ public class LexicalParser
 
         if (string.IsNullOrWhiteSpace(line)) return Array.Empty<Token>();
 
-        var tokensStr = line.Split(' ');
+        var tokensStr = line.Split(' ', StringSplitOptions.RemoveEmptyEntries);
         var result = new List<Token>();
         foreach (var token in tokensStr)
         {
