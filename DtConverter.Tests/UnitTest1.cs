@@ -64,6 +64,13 @@ public class DateTimeWrapperTests
     [TestCase("-- Full line comment", "")]
     [TestCase("1d 3h -- Part line comment", "1d 3h", TT.Human, TT.Human)]
     [TestCase("  1d   4h  15m ", "1d 4h 15m", TT.Human, TT.Human, TT.Human)]
+
+    [TestCase("01.05.2026 16:58:47.123 trim", "01.05.2026 0:00:00 UTC", TT.Date, TT.TimeSpan, TT.Trim)]
+    [TestCase("01.05.2026 00:00:00 trim", "01.05.2026 0:00:00 UTC", TT.Date, TT.TimeSpan, TT.Trim)]
+    [TestCase("01.05.2026 16:58:47.123 + 2h - 3m trim + 1h + 15m", "01.05.2026 1:15:00 UTC",
+        TT.Date, TT.TimeSpan, TT.Plus, TT.Human, TT.Minus, TT.Human, TT.Trim, TT.Plus, TT.Human, TT.Plus, TT.Human)]
+    [TestCase("1d 4h trim 15m", "1d 4h 15m", TT.Human, TT.Human, TT.Trim, TT.Human)]
+
     // @formatter:on
     public void TryParse_EpochSeconds_ReturnsCorrectUtcString(string inputString, string expected,
         params TokenType[] expectedTokens)

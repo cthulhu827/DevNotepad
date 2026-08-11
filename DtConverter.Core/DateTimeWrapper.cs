@@ -24,6 +24,13 @@ namespace DtConverter
             return new DateTimeWrapper(Value + (long)span.TotalMilliseconds, format);
         }
 
+        public DateTimeWrapper Trim()
+        {
+            var dtOffset = DateTimeOffset.FromUnixTimeMilliseconds(Value);
+            var startOfDay = new DateTimeOffset(dtOffset.Date, TimeSpan.Zero);
+            return new DateTimeWrapper(startOfDay.ToUnixTimeMilliseconds(), format);
+        }
+
         private static string FormatDateTime(DateTime dt)
         {
             var s = dt.ToString("G");

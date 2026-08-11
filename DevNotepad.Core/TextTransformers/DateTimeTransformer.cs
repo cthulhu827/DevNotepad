@@ -4,10 +4,10 @@ using DtConverter;
 
 namespace DevNotepad.Core.TextTransformers
 {
-    [TextTransformer("Date-time converter", "37b9029f-076a-4570-996f-a26a022dbff3")]
+    [TextTransformer("Date-time converter", "37b9029f-076a-4570-996f-a26a022dbff3", ShortCut = "Alt+Ctrl+D")]
     public class DateTimeTransformer : BaseTextTransformer, ISingleParameterTextTransformer, IParametrizedTextTransformer
     {
-        public string LineSuffix { get; set; }
+        public string LineSuffix { get; set; } = "";
 
         public override string[] Transform(string[] lines)
         {
@@ -23,9 +23,11 @@ namespace DevNotepad.Core.TextTransformers
                     continue;
                 }
 
+                // Если строка начинается с "!", то игнорируем LineSuffix
+                var lineToParse = line.StartsWith("!") ? line[1..] : line + LineSuffix;
                 try
                 {
-                    var wrapper = dtParser.Parse(prev, line + LineSuffix);
+                    var wrapper = dtParser.Parse(prev, lineToParse);
                     if (wrapper == null)
                         result.Add("error");
                     else

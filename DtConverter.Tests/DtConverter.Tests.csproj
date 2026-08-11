@@ -26,4 +26,8 @@
     <EmbeddedResource Include="TestCasesPrev\*.txt" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="TestCasesPrev\TestCase6.txt" />
+  </ItemGroup>
+
 </Project>

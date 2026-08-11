@@ -53,14 +53,14 @@ public class LexicalParser
         var (dateTokens, unprocessed2) = GetDate(unprocessed);
         var additionTokens = GetAdditions(unprocessed2);
 
-        ApplyPrevIfNeed(prev, ref dateTokens, ref additionTokens, ref modifierTokens);
+        ApplyPrevIfNeed(prev, ref dateTokens, ref additionTokens);
 
         IWrapper? result = GetDateTimeWrapper2(dateTokens, additionTokens, modifierTokens);
         return result ?? GetTimeWrapper2(additionTokens, modifierTokens);
     }
 
     private void ApplyPrevIfNeed(IWrapper? prev, ref Token[] dateTokens,
-        ref Token[] additionTokens, ref Token[] modifierTokens)
+        ref Token[] additionTokens)
     {
         if (prev == null) return;
 
@@ -88,7 +88,7 @@ public class LexicalParser
         // Если в строке время, и строка начинается с плюса, то это не новое значение
         // времени, а добавление к предыдущему.
         var firstToken = additionTokens.FirstOrDefault()?.Type;
-        if (firstToken is TokenType.Plus or TokenType.Minus)
+        if (firstToken is TokenType.Plus or TokenType.Minus or TokenType.Trim)
         {
             if (prev is DateTimeWrapper dateTimeWrapper)
             {
@@ -124,7 +124,7 @@ public class LexicalParser
 
     private TimeWrapper? GetTimeWrapper(Token[] tokens)
     {
-        var timeSpan = SumTimeTokens(tokens);
+        var (timeSpan, _) = SumTimeTokens(tokens, true);
         return timeSpan == TimeSpan.Zero
             ? null
             : new TimeWrapper(timeSpan, TimeWrapperFormat.Human);
@@ -170,10 +170,11 @@ public class LexicalParser
         }
     }
 
-    private TimeSpan SumTimeTokens(Token[] tokens)
+    private (TimeSpan, bool) SumTimeTokens(Token[] tokens, bool ignoreTrim)
     {
         var result = TimeSpan.Zero;
-        if (!tokens.Any()) return result;
+        var needTrim = false;
+        if (!tokens.Any()) return (result, false);
 
         var add = true;
         foreach (var token in tokens)
@@ -187,11 +188,19 @@ public class LexicalParser
                 var op = add ? 1 : -1;
                 result = result.Add(op * timeToken.Value);
             }
+            else if (token.Type == TokenType.Trim)
+            {
+                if (!ignoreTrim)
+                {
+                    result = TimeSpan.Zero;
+                    needTrim = true;
+                }
+            }
             else
                 throw new ArgumentOutOfRangeException($"Unexpected token {token.Type}");
         }
 
-        return result;
+        return (result, needTrim);
     }
 
     private DateTimeWrapper? GetDateTimeWrapper2(Token[] dateTokens, Token[] additionTokens, Token[] modifierTokens)
@@ -199,7 +208,9 @@ public class LexicalParser
         var dateTime = GetDateTimeWrapper(dateTokens);
         if (dateTime != null)
         {
-            dateTime = dateTime.Add(SumTimeTokens(additionTokens));
+            var (timeSpanToAdd, needTrim) = SumTimeTokens(additionTokens, false);
+            if (needTrim) dateTime = dateTime.Trim();
+            dateTime = dateTime.Add(timeSpanToAdd);
 
             foreach (var token in modifierTokens)
             {
@@ -283,6 +294,7 @@ public class LexicalParser
         if (token == "+") return new Token(TokenType.Plus);
         if (token == "-") return new Token(TokenType.Minus);
         if (token == "now") return new Token(TokenType.Now);
+        if (token == "trim") return new Token(TokenType.Trim);
 
         if (TryParseHuman(token, out var human)) return TokenTimeSpan.CreateHuman(human);
 
@@ -372,7 +384,8 @@ public class LexicalParser
             TokenType.TimeSpanWithDays,
             TokenType.Human,
             TokenType.Plus,
-            TokenType.Minus
+            TokenType.Minus,
+            TokenType.Trim
         };
         return tokens.All(t => additionTokens.Contains(t.Type))
             ? tokens.ToArray()
