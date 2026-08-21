@@ -32,9 +32,9 @@ public class с_TransformersDlg : ModalDialogController<m_TransformersDlg, v_Tra
     {
         if (string.IsNullOrEmpty(viewModel.ShortCut)) return;
 
-        const int shortCutWidth = 64;
-        var shortcutRect = new RectangleF(itemBounds.Width - shortCutWidth, itemBounds.Y, shortCutWidth, itemBounds.Height);
-        g.DrawString(viewModel.ShortCut, UI.Font14, UI.BrFont, shortcutRect);
+        var shortcutRect = new RectangleF(itemBounds.Left, itemBounds.Y, itemBounds.Width - 2, itemBounds.Height);
+        var format = new StringFormat { Alignment = StringAlignment.Far };
+        g.DrawString(viewModel.ShortCut, UI.FontMono14, UI.BrFont, shortcutRect, format);
     }
 
     private void txtSearch_KeyDown(object? sender, KeyEventArgs e)

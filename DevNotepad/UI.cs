@@ -23,6 +23,7 @@ public static class UI
     public static readonly Font Font14 = new("Segoe UI", 14);
     public static readonly Font Font10 = new("Segoe UI", 10);
     public static readonly Font FontMono12 = new("Consolas", 12);
+    public static readonly Font FontMono14 = new("Consolas", 14);
 
     public static Guid? AskTransformer()
     {
