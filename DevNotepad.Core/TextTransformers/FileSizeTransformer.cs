@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Linq;
 
 namespace DevNotepad.Core.TextTransformers
@@ -14,6 +15,7 @@ namespace DevNotepad.Core.TextTransformers
             new SizeDescription('k', 1, "Kb")
         };
 
+        [JsonProperty]
         public string Format { get; set; } = string.Empty;
 
         protected override string TransformLine(string line)
@@ -36,16 +38,6 @@ namespace DevNotepad.Core.TextTransformers
             return sizeDesc == null
                 ? $"Incorrect format '{Format}'"
                 : ConvertSize(sizeInBytes, sizeDesc.Power, sizeDesc.Unit, precision, appendUnit);
-        }
-
-        public object SaveState()
-        {
-            return Format;
-        }
-
-        public void RestoreState(object state)
-        {
-            Format = (string)state;
         }
 
         public string Parameter

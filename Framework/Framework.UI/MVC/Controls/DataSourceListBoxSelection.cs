@@ -3,6 +3,7 @@ using Framework.Domain;
 using Framework.MVC;
 using System.Collections.Generic;
 using System.Linq;
+using Framework.AppInfrastructure;
 
 namespace Framework.UI;
 
@@ -54,5 +55,15 @@ public class DataSourceListBoxSelection<T> : ISelection<T> where T : ViewModel
         {
             items.Add(single);
         }
+    }
+
+    public void SetSelectedId(int id)
+    {
+        listBox.DataSource?.MessageBus.Notify_ListItemHighlight_ByID(id);
+    }
+
+    public void SetSelectedIndex(int idx)
+    {
+        listBox.DataSource?.MessageBus.Notify_ListItemHighlight_ByIndex(idx);
     }
 }

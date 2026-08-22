@@ -1,5 +1,6 @@
 ﻿using DevNotepad.Controls.Page;
 using DevNotepad.Infrastructure;
+using DevNotepad.SavedPages;
 using Framework.MVC;
 
 namespace DevNotepad.Controls.MainWindow;
@@ -54,6 +55,16 @@ public class c_MainWindow : MVC_Controller<m_MainWindow, v_MainWindow>, IKeyHand
             if (changes.Contains(p_MainWindow.SelectedIndexChanged))
             {
                 ActivatePage(pages[Model.SelectedIndex]);
+            }
+
+            // Работает при загрузке страницы из файла.
+            // Нужно пересчитать размеры областей на добавленной странице
+            // после того, как страница была показана, т.е. стал известен её размер.
+            // Криво, потому что приходится делать это вручную и не учитывает случай,
+            // когда добавляется сразу несколько страниц.
+            if (changes.Contains(p_MainWindow.PageAdded))
+            {
+                pages[Model.SelectedIndex].Model.NotifyChanged((int)p_Page.WorkAreasListChanged);
             }
         });
     }
@@ -130,6 +141,37 @@ public class c_MainWindow : MVC_Controller<m_MainWindow, v_MainWindow>, IKeyHand
 
     private void Button1_Click(object? sender, EventArgs e)
     {
+        /*var t = Domain.CreateById(Guid.Parse("ed5639df-6c54-4c01-bc96-60ef84d9e94e"));
+        var tt = (SubstringTransformer)t;
+        var json = Domain.ToJson(tt);
+        File.WriteAllText(@"d:\w\test.json", json);
+        var tt2 = (SubstringTransformer)Domain.FromJson(json);
+        View.Text = tt2.Type.ToString();*/
+
+        /*var wa = pages.First().Model.WorkAreas.First();
+        var json = m_WorkArea.ToJson(wa);
+        File.WriteAllText(@"d:\w\test.json", json);
+
+        var wa2 = m_WorkArea.FromJson(json);
+        View.Text = wa2.Caption;*/
+
+
+        var json = pages.First().Model.ToJson();
+        File.WriteAllText(@"d:\w\test.json", json);
+
+        /*var json = File.ReadAllText(@"d:\w\test.json");
+        var page = m_Page.FromJson(json);
+        Model.AddPage(page);*/
+    }
+
+    private void LoadPageFromFile()
+    {
+        var fileName = UI.SelectSavedPage();
+        if (string.IsNullOrWhiteSpace(fileName)) return;
+
+        var json = File.ReadAllText(fileName);
+        var page = json.ToPage();
+        Model.AddPage(page);
     }
 
     #region IKeyHandler implementation
@@ -148,6 +190,8 @@ public class c_MainWindow : MVC_Controller<m_MainWindow, v_MainWindow>, IKeyHand
             View.tmrTimer.Enabled = !View.tmrTimer.Enabled;
             if (!View.tmrTimer.Enabled) View.Text = "Developer Notepad";
         }
+        else if (e is { KeyCode: Keys.O, Control: true, Shift: true })
+            LoadPageFromFile();
         else
             result = false;
 

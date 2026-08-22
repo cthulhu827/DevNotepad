@@ -9,11 +9,14 @@ public class m_Page : MVC_Model
 
     private readonly IList<m_WorkArea> workAreas = new List<m_WorkArea>();
 
-    public m_Page()
+    public m_Page(bool initWorkArea, string caption)
     {
         eventRaiser = new EventRaiser<p_Page>(ApplyChanges);
-        AddWorkArea();
+        Caption = caption;
+        if (initWorkArea) AddWorkArea();
     }
+
+    public string Caption { get; }
 
     public m_WorkArea[] WorkAreas => workAreas.ToArray();
 

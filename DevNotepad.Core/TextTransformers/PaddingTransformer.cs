@@ -1,14 +1,18 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace DevNotepad.Core.TextTransformers
 {
     [TextTransformer("Padding", "284bfb82-4e2c-4c24-a4be-ddd6da6a40a3")]
     public class PaddingTransformer : LineTransformer, IParametrizedTextTransformer
     {
+        [JsonProperty]
         public string TotalLength { get; set; } = string.Empty;
 
+        [JsonProperty]
         public char Symbol { get; set; } = ' ';
 
+        [JsonProperty]
         public PaddingType PaddingType { get; set; }
 
         protected override string TransformLine(string line)
@@ -21,16 +25,6 @@ namespace DevNotepad.Core.TextTransformers
             return PaddingType == PaddingType.Leading
                 ? line.PadLeft(totalLength, Symbol)
                 : line.PadRight(totalLength, Symbol);
-        }
-
-        public object SaveState()
-        {
-            return new Tuple<string, char, PaddingType>(TotalLength, Symbol, PaddingType);
-        }
-
-        public void RestoreState(object state)
-        {
-            (TotalLength, Symbol, PaddingType) = (Tuple<string, char, PaddingType>)state;
         }
 
         private static int ParseLength(string length) // todo: дублируется в SubstringTransformer

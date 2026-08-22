@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using DtConverter;
+using Newtonsoft.Json;
 
 namespace DevNotepad.Core.TextTransformers
 {
     [TextTransformer("Date-time converter", "37b9029f-076a-4570-996f-a26a022dbff3", ShortCut = "Alt+Ctrl+D")]
     public class DateTimeTransformer : BaseTextTransformer, ISingleParameterTextTransformer, IParametrizedTextTransformer
     {
+        [JsonProperty]
         public string LineSuffix { get; set; } = "";
 
         public override string[] Transform(string[] lines)
@@ -49,16 +51,6 @@ namespace DevNotepad.Core.TextTransformers
         {
             get => LineSuffix;
             set => LineSuffix = value;
-        }
-
-        public object SaveState()
-        {
-            return LineSuffix;
-        }
-
-        public void RestoreState(object state)
-        {
-            LineSuffix = (string)state;
         }
 
         public bool DontEditNew => true;

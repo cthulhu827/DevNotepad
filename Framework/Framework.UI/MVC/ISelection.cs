@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using Framework.UI;
 
 namespace Framework.MVC
@@ -17,5 +14,8 @@ namespace Framework.MVC
         T? Single { get; }
         IEnumerable<T> GetSelectedItems();
         void GetSelectedItems(IList<T> items);
+
+        void SetSelectedId(int id);
+        void SetSelectedIndex(int idx);
     }
 }

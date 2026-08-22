@@ -1,4 +1,5 @@
 ﻿using DevNotepad.Core;
+using DevNotepad.Dialogs.SavedPagesDlg;
 using DevNotepad.Dialogs.TransformersDlg;
 using DevNotepad.Infrastructure;
 
@@ -40,9 +41,20 @@ public static class UI
         var controller = new с_TransformersDlg();
         if (!controller.ShowDialog(model)) return null;
 
-        var selected = model.AllTransformers.SingleOrDefault(vm => vm.Id == model.SelectedId);
+        var selected = model.All.SingleOrDefault(vm => vm.Id == model.SelectedId);
         if (selected != null) counter.Increment(selected.TransformerId);
         return selected?.TransformerId;
+    }
+
+    public static string? SelectSavedPage()
+    {
+        var model = new m_SavedPagesDlg();
+
+        var controller = new c_SavedPagesDlg();
+        if (!controller.ShowDialog(model)) return null;
+
+        var selected = model.All.SingleOrDefault(vm => vm.Id == model.SelectedId);
+        return selected?.FileName;
     }
 
     public static void UnfocusCheckBox<T>(TextBox textBoxToFocus, T[] allChanges, params T[] changesToCheck)

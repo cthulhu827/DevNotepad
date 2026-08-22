@@ -12,6 +12,7 @@ namespace DevNotepad.Controls.PipeControl
         private IDataSource<VM_PipeItem> dataSource = DataSourceFactory.CreateNull<VM_PipeItem>();
 
         private Control? prevFocusedControl;
+        private string caption = "";
 
         public PipeControl()
         {
@@ -42,6 +43,16 @@ namespace DevNotepad.Controls.PipeControl
                 selectedIndex = value;
                 Invalidate();
                 OnSelectedIndexChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        public string Caption
+        {
+            get => caption;
+            set
+            {
+                caption = value;
+                Invalidate();
             }
         }
 
@@ -83,6 +94,14 @@ namespace DevNotepad.Controls.PipeControl
             int x = paddingX * 2;
             int y = (Height - itemHeight) / 2;
 
+            // Отрисовка заголовка (Caption) перед всеми item'ами
+            if (!string.IsNullOrEmpty(caption))
+            {
+                var (textWidth, textY) = MeasureString(caption);
+                g.DrawString(caption, Font, PipeItemColors.Selected.Bg, x, textY, StringFormat.GenericTypographic);
+                x += textWidth + paddingX * 2;
+            }
+
             for (int i = 0; i < dataSource.Count; i++)
             {
                 bool isFirst = i == 0;
@@ -113,9 +132,7 @@ namespace DevNotepad.Controls.PipeControl
                     combined = true;
                 }
 
-
-                var textSize = g.MeasureString(itemText, Font, new PointF(0, 0), StringFormat.GenericTypographic);
-                var textWidth = (int)textSize.Width;
+                var (textWidth, textY) = MeasureString(itemText);
                 int rectangleWidth = textWidth + 2 * paddingX + iconCount * (paddingX + PipeItemColors.IconSize);
                 // Если рисуем иконки, то после них padding добавлять не нужно, т.к. у самих иконок справа тоже
                 // есть пустое место, которое сыграет роль padding'а
@@ -144,7 +161,6 @@ namespace DevNotepad.Controls.PipeControl
                 g.DrawPolygon(Focused ? PipeItemColors.PenEdit : PipeItemColors.PenView, points);
 
                 var textX = x + leftArrowWidth + paddingX;
-                var textY = y + (itemHeight - textSize.Height) / 2 - 2; // без -2 текст уезжает слишком вниз относительно иконки
 
                 g.DrawString(itemText, Font, colors.Fore, textX, textY, StringFormat.GenericTypographic);
 
@@ -165,6 +181,16 @@ namespace DevNotepad.Controls.PipeControl
                 }
 
                 x += leftArrowWidth + rectangleWidth;
+            }
+
+            return;
+
+            (int, Single) MeasureString(string text)
+            {
+                var textSize = g.MeasureString(text, Font, new PointF(0, 0), StringFormat.GenericTypographic);
+                var textWidth = (int)textSize.Width;
+                var textY = y + (itemHeight - textSize.Height) / 2 - 2; // без -2 текст уезжает слишком вниз относительно иконки
+                return (textWidth, textY);
             }
         }
 

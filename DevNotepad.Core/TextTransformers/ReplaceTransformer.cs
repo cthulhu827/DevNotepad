@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace DevNotepad.Core.TextTransformers
 {
@@ -13,18 +14,10 @@ namespace DevNotepad.Core.TextTransformers
                 : line.Replace(OldValue, NewValue);
         }
 
+        [JsonProperty]
         public string OldValue { get; set; } = "";
 
+        [JsonProperty]
         public string NewValue { get; set; } = "";
-
-        public object SaveState()
-        {
-            return new Tuple<string, string>(OldValue, NewValue);
-        }
-
-        public void RestoreState(object state)
-        {
-            (OldValue, NewValue) = (Tuple<string, string>)state;
-        }
     }
 }

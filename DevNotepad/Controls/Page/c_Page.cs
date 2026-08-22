@@ -95,8 +95,8 @@ public class c_Page : MVC_Controller<m_Page, v_Page>, IKeyHandler
         for (int i = 0; i < allViews.Length; i++)
         {
             allViews[i].Dock = i == allViews.Length - 1 ? DockStyle.Fill : DockStyle.Top;
+            allViews[i].BringToFront();
         }
-        allViews.LastOrDefault()?.BringToFront();
 
         var unresizedViews = allViews.Where(view => !view.ManualResized).ToArray();
         if (unresizedViews.Length < 2) return;
@@ -125,7 +125,7 @@ public class c_Page : MVC_Controller<m_Page, v_Page>, IKeyHandler
 
     public void SetFocus()
     {
-        workAreas.LastOrDefault()?.SetFocus();
+        workAreas.FirstOrDefault()?.SetFocus();
     }
 
     #region IKeyHandler implementation

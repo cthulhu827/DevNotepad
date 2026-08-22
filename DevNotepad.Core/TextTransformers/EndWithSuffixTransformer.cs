@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Linq;
 
 namespace DevNotepad.Core.TextTransformers
@@ -21,8 +22,10 @@ namespace DevNotepad.Core.TextTransformers
             ExceptLastLine = exceptLastLine;
         }
 
+        [JsonProperty]
         public string Suffix { get; set; }
 
+        [JsonProperty]
         public bool ExceptLastLine { get; set; }
 
         public override string[] Transform(string[] lines)
@@ -42,16 +45,6 @@ namespace DevNotepad.Core.TextTransformers
                 return line.EndsWith(Suffix) ? line.Substring(0, line.Length - Suffix.Length) : line;
 
             return line.EndsWith(Suffix) ? line : line + Suffix;
-        }
-
-        public object SaveState()
-        {
-            return new Tuple<string, bool>(Suffix, ExceptLastLine);
-        }
-
-        public void RestoreState(object state)
-        {
-            (Suffix, ExceptLastLine) = (Tuple<string, bool>)state;
         }
     }
 }

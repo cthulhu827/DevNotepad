@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Linq;
 
 namespace DevNotepad.Core.TextTransformers
@@ -25,6 +26,7 @@ namespace DevNotepad.Core.TextTransformers
         /// - null - нужно определить префикс самостоятельно
         /// - "" - ничего отрезать не нужно
         /// </remarks>
+        [JsonProperty]
         public string? Prefix { get; set; }
 
         /// <summary>
@@ -35,6 +37,7 @@ namespace DevNotepad.Core.TextTransformers
         /// - null - нужно определить суффикс самостоятельно
         /// - "" - ничего отрезать не нужно
         /// </remarks>
+        [JsonProperty]
         public string? Suffix { get; set; }
 
         public string? CalculatedPrefix { get; private set; }
@@ -114,16 +117,6 @@ namespace DevNotepad.Core.TextTransformers
             if (!line.StartsWith(prefix)) prefixLength = 0;
             if (!line.EndsWith(suffix)) suffixLength = 0;
             return line.Substring(prefixLength, line.Length - prefixLength - suffixLength);
-        }
-
-        public object SaveState()
-        {
-            return new Tuple<string?, string?>(Prefix, Suffix);
-        }
-
-        public void RestoreState(object state)
-        {
-            (Prefix, Suffix) = (Tuple<string?, string?>)state;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace DevNotepad.Core.TextTransformers
 {
@@ -13,6 +14,17 @@ namespace DevNotepad.Core.TextTransformers
         private static ITextTransformer BuildEven() => new NthLinesTransformer { Parameter = "2/2", DontEditNew = true };
 
         private string expression = string.Empty;
+
+        [JsonProperty]
+        public string Expression
+        {
+            get => expression;
+            set
+            {
+                expression = value;
+                (groupSize, lineNumbers) = ParseExpression(expression);
+            }
+        }
 
         private int groupSize;
         private int[] lineNumbers = Array.Empty<int>();
@@ -38,26 +50,12 @@ namespace DevNotepad.Core.TextTransformers
             return result.ToArray();
         }
 
-        public object SaveState()
-        {
-            return expression;
-        }
-
-        public void RestoreState(object state)
-        {
-            Parameter = (string)state;
-        }
-
         public bool DontEditNew { get; private set; }
 
         public string Parameter
         {
             get => expression;
-            set
-            {
-                expression = value;
-                (groupSize, lineNumbers) = ParseExpression(expression);
-            }
+            set => Expression = value;
         }
 
         public string Hint => "<Group size>/<Line numbers> 🡒 6/1-3,6";

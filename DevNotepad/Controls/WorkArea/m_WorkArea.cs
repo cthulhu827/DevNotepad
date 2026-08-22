@@ -16,6 +16,7 @@ public class m_WorkArea : MVC_Model, ITransformerEditSession
     private string[] source = Array.Empty<string>();
 
     private int pipeIndex = -1;
+    private string caption = "";
 
     public m_WorkArea()
     {
@@ -49,6 +50,16 @@ public class m_WorkArea : MVC_Model, ITransformerEditSession
     public string[] Transformed { get; private set; } = Array.Empty<string>();
 
     public string TransformedDescription => $"Count: {Transformed.Length}";
+
+    public string Caption
+    {
+        get => caption;
+        set
+        {
+            if (caption == value) return;
+            eventRaiser.Raise(() => caption = value, p_WorkArea.CaptionChanged);
+        }
+    }
 
     public void AddItem(ITextTransformer transformer)
     {
@@ -202,16 +213,13 @@ public class m_WorkArea : MVC_Model, ITransformerEditSession
 
     private void EditSelectedItem(VM_PipeItem selectedItem)
     {
-        if (selectedItem.Transformer is not IParametrizedTextTransformer parametrizedTransformer)
-        {
-            return;
-        }
+        if (selectedItem.Transformer is not IParametrizedTextTransformer) return;
 
-        var state = parametrizedTransformer.SaveState();
+        var json = selectedItem.Transformer.ToJson();
         EditItemIfNeed(selectedItem, () =>
         {
             // Если в диалоге нажали кнопку Отмена, то откатываем сделанные в диалоге изменения.
-            eventRaiser.Raise(() => { parametrizedTransformer.RestoreState(state); });
+            eventRaiser.Raise(() => { json.ToTransformer(selectedItem.Transformer); });
         }, false);
     }
 

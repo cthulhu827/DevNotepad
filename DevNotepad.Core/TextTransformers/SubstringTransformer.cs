@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace DevNotepad.Core.TextTransformers
 {
@@ -44,10 +46,15 @@ namespace DevNotepad.Core.TextTransformers
         {
         }
 
+        [JsonProperty]
         public string Limit { get; set; }
 
+        [JsonProperty]
+        [JsonConverter(typeof(StringEnumConverter))]
         public SubstringType Type { get; set; }
 
+        [JsonProperty]
+        [JsonConverter(typeof(ValueTupleConverter))]
         public (int SelStart, int SelLength) Selection { get; set; }
 
         public bool DontEditNew { get; private set; }
@@ -68,16 +75,6 @@ namespace DevNotepad.Core.TextTransformers
                 SubstringType.BySelection => SubstringBySelection(line),
                 _ => line
             };
-        }
-
-        public object SaveState()
-        {
-            return new Tuple<string, SubstringType>(Limit, Type);
-        }
-
-        public void RestoreState(object state)
-        {
-            (Limit, Type) = (Tuple<string, SubstringType>)state;
         }
 
         private string SubstringByLimit(string line)
@@ -160,6 +157,31 @@ namespace DevNotepad.Core.TextTransformers
         {
             var pos = line.IndexOf(Limit, StringComparison.CurrentCulture);
             return pos == -1 ? line : line.Substring(pos + Limit.Length);
+        }
+    }
+
+    /// <summary>
+    /// JsonConverter for <see cref="ValueTuple{T1,T2}"/> — Newtonsoft.Json does not serialize
+    /// the Item1/Item2 fields of ValueTuple by default, so a custom converter is needed.
+    /// </summary>
+    internal class ValueTupleConverter : JsonConverter<(int, int)>
+    {
+        public override void WriteJson(JsonWriter writer, (int, int) value, JsonSerializer serializer)
+        {
+            writer.WriteStartArray();
+            writer.WriteValue(value.Item1);
+            writer.WriteValue(value.Item2);
+            writer.WriteEndArray();
+        }
+
+        public override (int, int) ReadJson(
+            JsonReader reader, Type objectType, (int, int) existingValue, bool hasExistingValue,
+            JsonSerializer serializer)
+        {
+            var arr = serializer.Deserialize<int[]>(reader);
+            if (arr == null || arr.Length < 2)
+                return default;
+            return (arr[0], arr[1]);
         }
     }
 }

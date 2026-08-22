@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -24,12 +25,25 @@ namespace DevNotepad.Core.TextTransformers
             SearchText = searchText;
         }
 
+        [JsonProperty]
         public string SearchText { get; set; }
+
+        [JsonProperty]
         public bool Exclude { get; set; }
+
+        [JsonProperty]
         public bool CaseSensitive { get; set; }
+
+        [JsonProperty]
         public bool RegEx { get; set; }
+
+        [JsonProperty]
         public int LinesBefore { get; set; }
+
+        [JsonProperty]
         public int LinesAfter { get; set; }
+
+        [JsonProperty]
         public bool DoNotSeparate { get; set; }
 
         public override string[] Transform(string[] lines)
@@ -150,18 +164,6 @@ namespace DevNotepad.Core.TextTransformers
                 else
                     needReturn[i] = LineResult.Exclude;
             }
-        }
-
-        public object SaveState()
-        {
-            return new Tuple<string, bool, bool, bool, int, int, bool>(
-                SearchText, Exclude, CaseSensitive, RegEx, LinesBefore, LinesAfter, DoNotSeparate);
-        }
-
-        public void RestoreState(object state)
-        {
-            (SearchText, Exclude, CaseSensitive, RegEx, LinesBefore, LinesAfter, DoNotSeparate)
-                = (Tuple<string, bool, bool, bool, int, int, bool>)state;
         }
 
         private LineResult[] SearchBySearchText(string[] lines, IDictionary<int, string>? regExGroups)

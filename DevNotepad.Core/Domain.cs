@@ -4,6 +4,8 @@ using System.Linq;
 using System.Reflection;
 using DevNotepad.Core.TextTransformers;
 using Framework.AppInfrastructure;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace DevNotepad.Core
 {
@@ -48,15 +50,30 @@ namespace DevNotepad.Core
 
         public static ITextTransformer Copy(this ITextTransformer src)
         {
-            var result = CreateById(src.Id);
+            return src is IParametrizedTextTransformer
+                ? src.ToJson().ToTransformer()
+                : CreateById(src.Id);
+        }
 
-            if (src is IParametrizedTextTransformer parametrized)
+        public static string ToJson(this ITextTransformer transformer)
+        {
+            var jObject = JObject.FromObject(transformer);
+            jObject.AddFirst(new JProperty(nameof(ITextTransformer.Id), transformer.Id.ToString()));
+            return jObject.ToString(Formatting.Indented);
+        }
+
+        public static ITextTransformer ToTransformer(this string json, ITextTransformer? transformer = null)
+        {
+            if (transformer == null)
             {
-                var state = parametrized.SaveState();
-                ((IParametrizedTextTransformer)result).RestoreState(state);
+                var jObject = JObject.Parse(json);
+                var id = jObject[nameof(ITextTransformer.Id)]?.ToObject<Guid>()
+                         ?? throw new JsonException("Missing 'Id' field in JSON.");
+                transformer = CreateById(id);
             }
 
-            return result;
+            JsonConvert.PopulateObject(json, transformer);
+            return transformer;
         }
     }
 }

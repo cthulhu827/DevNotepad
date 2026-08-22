@@ -6,4 +6,5 @@ public enum p_WorkArea
     TransformedChanged,
     PipeChanged,
     PipeIndexChanged,
+    CaptionChanged,
 }

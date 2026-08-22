@@ -3,7 +3,7 @@ using Framework.MVC;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using Framework.AppInfrastructure;
 
 namespace Framework.UI
 {
@@ -61,6 +61,16 @@ namespace Framework.UI
             {
                 items.Add(single);
             }
+        }
+
+        public void SetSelectedId(int id)
+        {
+            comboBox.DataSource.MessageBus.Notify_ListItemHighlight_ByID(id);
+        }
+
+        public void SetSelectedIndex(int idx)
+        {
+            comboBox.DataSource.MessageBus.Notify_ListItemHighlight_ByIndex(idx);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using DevNotepad.Controls.PipeControl;
 using DevNotepad.Core;
+using DevNotepad.Dialogs.InputBox;
 using DevNotepad.Infrastructure;
 using Framework.MVC;
 
@@ -68,6 +69,11 @@ public class c_WorkArea : MVC_Controller<m_WorkArea, v_WorkArea>, IKeyHandler
             {
                 View.pipeControl.SelectedIndex = Model.PipeIndex;
             }
+
+            if (changes.Contains(p_WorkArea.CaptionChanged))
+            {
+                View.pipeControl.Caption = Model.Caption;
+            }
         });
     }
 
@@ -111,6 +117,13 @@ public class c_WorkArea : MVC_Controller<m_WorkArea, v_WorkArea>, IKeyHandler
         Model.AddItem(transformer);
     }
 
+    public void EditPipeControlCaption()
+    {
+        var model = new m_InputBox("Edit workarea caption") { Text = Model.Caption };
+        var controller = new c_InputBox();
+        if (controller.ShowDialog(model)) Model.Caption = model.Text;
+    }
+
     #region IKeyHandler implementation
 
     public bool IsFocused()
@@ -129,6 +142,8 @@ public class c_WorkArea : MVC_Controller<m_WorkArea, v_WorkArea>, IKeyHandler
             View.pipeControl.Edit(View.ActiveControl);
         else if (e.KeyCode == Keys.Insert)
             AddTransformer();
+        else if (e is { KeyCode: Keys.E, Control: true })
+            EditPipeControlCaption();
         else
             result = false;
 

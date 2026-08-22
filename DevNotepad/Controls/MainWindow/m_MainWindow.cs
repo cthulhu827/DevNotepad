@@ -31,8 +31,9 @@ public class m_MainWindow : MVC_Model
     {
         eventRaiser.Raise(() =>
         {
-            pages.Add(model ?? new m_Page());
-            ToolButtons.AddItem(new VM_ToolButton($"Page {pages.Count}"));
+            model ??= new m_Page(true, $"Page {pages.Count + 1}");
+            pages.Add(model);
+            ToolButtons.AddItem(new VM_ToolButton(model.Caption));
             SelectedIndex = pages.Count - 1;
         }, p_MainWindow.PageAdded);
     }
