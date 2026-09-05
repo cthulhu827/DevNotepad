@@ -8,6 +8,17 @@ namespace DtConverter.Tests;
 [TestFixture]
 public class DateTimeWrapperTests
 {
+    [SetUp]
+    public void SetRussianCulture()
+    {
+        var culture = (CultureInfo)CultureInfo.GetCultureInfo("ru-RU").Clone();
+        culture.DateTimeFormat.ShortDatePattern = "dd.MM.yyyy";
+        culture.DateTimeFormat.LongTimePattern = "H:mm:ss";
+        culture.DateTimeFormat.ShortTimePattern = "H:mm";
+        CultureInfo.CurrentCulture = culture;
+        CultureInfo.CurrentUICulture = culture;
+    }
+
     // @formatter:off
     [TestCase("01.05.2026 16:58:47", "01.05.2026 16:58:47 UTC", TT.Date, TT.TimeSpan)]
     [TestCase("01.05.2026 16:58:47.456", "01.05.2026 16:58:47.456 UTC", TT.Date, TT.TimeSpan)]
