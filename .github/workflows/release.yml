@@ -1,0 +1,74 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to publish (e.g. v1.0.0)'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build and release
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET SDKs
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            6.0.x
+            8.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore DevNotepad.sln
+
+      - name: Build (Release)
+        run: dotnet build DevNotepad.sln -c Release --no-restore
+
+      - name: Test
+        run: dotnet test DevNotepad.sln -c Release --no-build --verbosity normal
+
+      - name: Publish win-x64
+        run: >
+          dotnet publish DevNotepad/DevNotepad.csproj
+          -c Release
+          -r win-x64
+          --self-contained false
+          -p:PublishSingleFile=false
+          -o publish/win-x64
+
+      - name: Create zip archive
+        shell: pwsh
+        run: |
+          $version = "${{ github.event.inputs.tag }}"
+          if ([string]::IsNullOrWhiteSpace($version)) {
+            $version = "${{ github.ref_name }}"
+          }
+          $version = $version.TrimStart('v')
+          $archive = "DevNotepad-$version-win-x64.zip"
+          Compress-Archive -Path "publish/win-x64/*" -DestinationPath $archive
+          echo "ARTIFACT=$archive" >> $env:GITHUB_ENV
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.inputs.tag != '' && github.event.inputs.tag || github.ref_name }}
+          name: Release ${{ github.event.inputs.tag != '' && github.event.inputs.tag || github.ref_name }}
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+          files: |
+            ${{ env.ARTIFACT }}
