@@ -8,6 +8,9 @@ namespace DevNotepad.Core.TextTransformers
     [TextTransformer("Date-time converter", "37b9029f-076a-4570-996f-a26a022dbff3", ShortCut = "Alt+Ctrl+D")]
     public class DateTimeTransformer : BaseTextTransformer, ISingleParameterTextTransformer, IParametrizedTextTransformer
     {
+        [TextTransformer("Date-time converter (Msk)", "41fb13a3-550d-4ab6-8a5a-03cdeac91f4f")]
+        private static ITextTransformer BuildExclude() => new DateTimeTransformer { LineSuffix = " msk" };
+
         [JsonProperty]
         public string LineSuffix { get; set; } = "";
 

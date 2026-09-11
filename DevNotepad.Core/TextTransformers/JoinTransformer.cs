@@ -5,6 +5,9 @@ namespace DevNotepad.Core.TextTransformers
     [TextTransformer("Join", "ce7ec348-f3b3-4ae4-9c32-73d9e6bb7ba2")]
     public class JoinTransformer : BaseTextTransformer, IParametrizedTextTransformer, ISingleParameterTextTransformer
     {
+        [TextTransformer("Join with comma", "6b759eaf-b956-4991-99b9-647648475cc1")]
+        private static ITextTransformer BuildJoinWithComma() => new JoinTransformer { Separator = ", ", DontEditNew = true };
+
         [JsonProperty]
         public string Separator { get; set; } = string.Empty;
 
@@ -18,5 +21,7 @@ namespace DevNotepad.Core.TextTransformers
             get => Separator;
             set => Separator = value;
         }
+
+        public bool DontEditNew { get; private set; }
     }
 }

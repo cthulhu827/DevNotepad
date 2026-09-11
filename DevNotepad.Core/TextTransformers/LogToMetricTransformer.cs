@@ -2,7 +2,7 @@
 
 namespace DevNotepad.Core.TextTransformers
 {
-    [TextTransformer("Log to metric name", "8dbfb09d-c8c6-49c8-9b5f-0889a12406f6")]
+    [TextTransformer("Log to metric name", "8dbfb09d-c8c6-49c8-9b5f-0889a12406f6", Description = "OrderCount => order_count")]
     public class LogToMetricTransformer : LineTransformer
     {
         private readonly VariableNameParser parser = new VariableNameParser();

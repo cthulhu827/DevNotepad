@@ -27,32 +27,32 @@ namespace DevNotepad.Core.TextTransformers
         [TextTransformer("To upper case", "41f989ae-841d-4ea5-9c78-14db656d8abf")]
         private static ITextTransformer BuildUpper() => new TextCaseTransformer(TextTransformType.ToUpper);
 
-        [TextTransformer("Unicode escape", "a3f7c1d2-5e84-4b96-8a01-2c3d4e5f6071")]
-        private static ITextTransformer BuildUnicodeEscape() => new TextCaseTransformer(TextTransformType.UnicodeEscape);
+        [TextTransformer("Unicode encode", "a3f7c1d2-5e84-4b96-8a01-2c3d4e5f6071", Description = @"абв => \u0430\u0431\u0432")]
+        private static ITextTransformer BuildUnicodeEncode() => new TextCaseTransformer(TextTransformType.UnicodeEscape);
 
-        [TextTransformer("Unicode unescape", "b4e8d2c3-6f95-4ca7-9b12-3d4e5f607182")]
+        [TextTransformer("Unicode decode", "b4e8d2c3-6f95-4ca7-9b12-3d4e5f607182", Description = @"\u0430\u0431\u0432 => абв")]
         private static ITextTransformer BuildUnicodeUnescape() => new TextCaseTransformer(TextTransformType.UnicodeUnescape);
 
-        [TextTransformer("Percent encode", "c5f9e3d4-7a06-4db8-ac23-4e5f6071829a")]
+        [TextTransformer("Percent encode", "c5f9e3d4-7a06-4db8-ac23-4e5f6071829a", Description = "абв => %D0%B0%D0%B1%D0%B2")]
         private static ITextTransformer BuildPercentEncode() => new TextCaseTransformer(TextTransformType.PercentEncode);
 
-        [TextTransformer("Percent decode", "d6071e4e-8b17-5ec9-bd34-5f607182930b")]
+        [TextTransformer("Percent decode", "d6071e4e-8b17-5ec9-bd34-5f607182930b", Description = "%D0%B0%D0%B1%D0%B2 => абв")]
         private static ITextTransformer BuildPercentUnencode() => new TextCaseTransformer(TextTransformType.PercentDecode);
 
-        [TextTransformer("Base64 encode", "e7182f5f-9c28-6fd0-ce45-607182930c1c")]
+        [TextTransformer("Base64 encode", "e7182f5f-9c28-6fd0-ce45-607182930c1c", Description = "абв => 0LDQsdCy")]
         private static ITextTransformer BuildBase64Encode() => new TextCaseTransformer(TextTransformType.Base64Encode);
 
-        [TextTransformer("Base64 decode", "f8293060-ad39-70e1-df56-7182930d2d2d")]
+        [TextTransformer("Base64 decode", "f8293060-ad39-70e1-df56-7182930d2d2d", Description = "0LDQsdCy => абв")]
         private static ITextTransformer BuildBase64Decode() => new TextCaseTransformer(TextTransformType.Base64Decode);
 
         [TextTransformer("JWT decode", "a9304171-be4a-81f2-e067-8293041e3e3e")]
         private static ITextTransformer BuildJwtDecode() => new TextCaseTransformer(TextTransformType.JwtDecode);
 
-        [TextTransformer("Python escape", "b0415282-cf5b-4293-a178-930415f4c4b3")]
-        private static ITextTransformer BuildPythonEscape() => new TextCaseTransformer(TextTransformType.PythonEscape);
+        [TextTransformer("Python encode", "b0415282-cf5b-4293-a178-930415f4c4b3", Description = @"абв => \xd0\xb0\xd0\xb1\xd0\xb2")]
+        private static ITextTransformer BuildPythonEncode() => new TextCaseTransformer(TextTransformType.PythonEscape);
 
-        [TextTransformer("Python unescape", "c1526393-d06c-4384-b289-041526a5d4c2")]
-        private static ITextTransformer BuildPythonUnescape() => new TextCaseTransformer(TextTransformType.PythonUnescape);
+        [TextTransformer("Python decode", "c1526393-d06c-4384-b289-041526a5d4c2", Description = @"\xd0\xb0\xd0\xb1\xd0\xb2 => абв")]
+        private static ITextTransformer BuildPythonDecode() => new TextCaseTransformer(TextTransformType.PythonUnescape);
 
         private const string IncorrectString = "Incorrect string";
 

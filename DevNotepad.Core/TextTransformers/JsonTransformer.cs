@@ -14,10 +14,10 @@ namespace DevNotepad.Core.TextTransformers
 
     public class JsonTransformer : BaseTextTransformer
     {
-        [TextTransformer("Json Escape", "d09ca4e6-c498-4835-9ca9-254da6cd9102")]
+        [TextTransformer("Json Escape", "d09ca4e6-c498-4835-9ca9-254da6cd9102", Description = "{\"a\":\"42\"} => {\\\"a\\\":\\\"42\\\"}")]
         private static ITextTransformer BuildEscape() => new JsonTransformer(JsonTransformType.Escape);
 
-        [TextTransformer("Json Unescape", "5c8ea65c-6e7d-46fb-a4ef-d4b375487322")]
+        [TextTransformer("Json Unescape", "5c8ea65c-6e7d-46fb-a4ef-d4b375487322", Description = "{\\\"a\\\":\\\"42\\\"} => {\"a\":\"42\"}")]
         private static ITextTransformer BuildUnescape() => new JsonTransformer(JsonTransformType.Unescape);
 
         [TextTransformer("Json Pretty Print", "7a976801-fb86-4dd3-87d0-7526c3eb9091")]

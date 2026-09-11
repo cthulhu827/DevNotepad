@@ -15,6 +15,8 @@ namespace DevNotepad.Core.TextTransformers
 
         public string Caption { get; }
 
+        public string Description { get; set; } = "";
+
         public string ShortCut { get; set; } = "";
     }
 }

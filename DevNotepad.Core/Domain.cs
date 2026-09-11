@@ -35,7 +35,7 @@ namespace DevNotepad.Core
                 if (attr != null)
                 {
                     var shortCut = ShortcutConverter?.Convert(attr.ShortCut) ?? 0;
-                    result.Add(new TransformerInfo(attr.Id, attr.Caption, memberInfo, shortCut, attr.ShortCut));
+                    result.Add(new TransformerInfo(attr.Id, attr.Caption, attr.Description, memberInfo, shortCut, attr.ShortCut));
                 }
             }
         }

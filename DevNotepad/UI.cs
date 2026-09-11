@@ -20,6 +20,7 @@ public static class UI
     public static readonly Brush BrChatListBg = new SolidBrush(ClrChatListBg);
     public static readonly Brush BrChatListSel = new SolidBrush(ClrChatListSel);
     public static readonly Brush BrFolderListSel = new SolidBrush(ClrFolderListSel);
+    public static readonly Brush BrFolderIcon = new SolidBrush(ClrFolderIcon);
 
     public static readonly Font Font14 = new("Segoe UI", 14);
     public static readonly Font Font10 = new("Segoe UI", 10);
@@ -31,7 +32,7 @@ public static class UI
         var counter = new TransformersCallCounter(Program.Settings.RecentTransformersPath);
         var counts = counter.ReadAll();
         var allTransformers = Domain.All
-            .Select(a => new VM_TransformerForDlg(a.Id, a.Caption, a.ShortCutStr))
+            .Select(a => new VM_TransformerForDlg(a.Id, a.Caption, a.Description, a.ShortCutStr))
             .OrderByDescending(a => counts.TryGetValue(a.TransformerId, out var c) ? c : 0)
             .ThenBy(a => a.Caption, StringComparer.CurrentCultureIgnoreCase)
             .ToArray();
