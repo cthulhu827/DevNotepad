@@ -202,27 +202,6 @@ namespace DevNotepad.Core.TextTransformers
                 .ToArray();
         }
 
-        private string? CheckRegEx(string line, Regex regEx)
-        {
-            var match = regEx.Match(line);
-
-            // Если включена опция Exclude, то просто находим строки по RegEx'у и исключаем их,
-            // а неподходящие по RegEx'у строки оставляем как есть.
-            if (Exclude)
-            {
-                return match.Success ? null : line;
-            }
-
-            // Иначе ищем строки по RegEx'у и возвращаем их как есть, если в RegEx'е не указывается
-            // группа. При указании группы возвращаем не всю строку целиком, а только найденную группу.
-            if (match.Success)
-            {
-                return match.Groups.Count == 1 ? line : match.Groups[1].Value;
-            }
-
-            return null;
-        }
-
         private enum LineResult
         {
             Exclude,

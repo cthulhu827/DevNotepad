@@ -19,11 +19,6 @@ public class c_TPSplitTransformerDlg : c_TPSingleParamDlg<m_TPSingleParamDlg<Spl
 {
 }
 
-[TPEditor(typeof(JoinTransformer))]
-public class c_TPJoinTransformerDlg : c_TPSingleParamDlg<m_TPSingleParamDlg<JoinTransformer>>
-{
-}
-
 [TPEditor(typeof(NthLinesTransformer))]
 public class c_TPNthLinesTransformerDlg : c_TPSingleParamDlg<m_TPSingleParamDlg<NthLinesTransformer>>
 {
