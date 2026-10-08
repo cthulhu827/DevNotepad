@@ -181,7 +181,7 @@ public class c_MainWindow : MVC_Controller<m_MainWindow, v_MainWindow>, IKeyHand
         if (!View.ContainsFocus) return false;
 
         var result = true;
-        if (e is { KeyCode: Keys.T, Control: true })
+        if (e is { KeyCode: Keys.T, Control: true, Alt: false })
             Model.AddPage();
         else if (e is { KeyCode: Keys.Tab, Control: true })
             Model.NextPage(!e.Shift);

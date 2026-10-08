@@ -1,9 +1,8 @@
 ﻿using Newtonsoft.Json;
-using System;
 
 namespace DevNotepad.Core.TextTransformers
 {
-    [TextTransformer("Replace", "a7eaa061-6a22-4ea8-8c77-2170a8d514af")]
+    [TextTransformer("Replace", "a7eaa061-6a22-4ea8-8c77-2170a8d514af", ShortCut = "Alt+R")]
     public class ReplaceTransformer : LineTransformer, IParametrizedTextTransformer
     {
         protected override string TransformLine(string line)

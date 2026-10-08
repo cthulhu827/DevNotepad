@@ -1,10 +1,9 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Linq;
 
 namespace DevNotepad.Core.TextTransformers
 {
-    [TextTransformer("Trim suffix / prefix", "6ed321bd-80b0-49b9-9180-4982901f7cef")]
+    [TextTransformer("Trim suffix / prefix", "6ed321bd-80b0-49b9-9180-4982901f7cef", ShortCut = "Alt+Ctrl+T")]
     public class TrimTextTransformer : BaseTextTransformer, IParametrizedTextTransformer
     {
         public TrimTextTransformer()
