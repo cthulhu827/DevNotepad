@@ -315,7 +315,7 @@ public class LexicalParser
 
         var match = HumanTokenRegex.Match(token);
         if (!match.Success) return false;
-        if (!int.TryParse(match.Groups[1].Value, out int value)) return false;
+        if (!double.TryParse(match.Groups[1].Value, out double value)) return false;
 
         timeSpan = match.Groups[2].Value switch
         {
