@@ -9,7 +9,7 @@ public class m_TPBase<TTransformer, TEnum> : MVC_Model, ITPDlgModel
 {
     private TTransformer? transformer;
     protected string[]? source;
-    private ITransformerEditSession? editSession;
+    protected TransformerEditContext? context;
 
     protected readonly EventRaiser<TEnum> eventRaiser;
 
@@ -18,11 +18,11 @@ public class m_TPBase<TTransformer, TEnum> : MVC_Model, ITPDlgModel
         eventRaiser = new EventRaiser<TEnum>(ApplyChanges);
     }
 
-    public void Init(IParametrizedTextTransformer newTransformer, string[] newSource, ITransformerEditSession newEditSession)
+    public virtual void Init(IParametrizedTextTransformer newTransformer, string[] newSource, TransformerEditContext newContext)
     {
         transformer = (TTransformer)newTransformer;
         source = newSource;
-        editSession = newEditSession;
+        context = newContext;
     }
 
     public TTransformer Transformer => transformer ?? throw new Exception("Method Init() hasn't been called");
@@ -31,12 +31,10 @@ public class m_TPBase<TTransformer, TEnum> : MVC_Model, ITPDlgModel
 
     private string[] Source => source ?? throw new Exception("Method Init() hasn't been called");
 
-    private ITransformerEditSession EditSession => editSession ?? throw new Exception("Method Init() hasn't been called");
-
     private void ApplyChanges(ICollection<TEnum> changes)
     {
         Transformer.Transform(Source);
         NotifyChanged(changes.Select(change => Convert.ToInt32(change)).ToArray());
-        EditSession.Changed();
+        context?.Changed();
     }
 }

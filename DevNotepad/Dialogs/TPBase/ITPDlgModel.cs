@@ -4,7 +4,7 @@ namespace DevNotepad.Dialogs.TPBase;
 
 public interface ITPDlgModel
 {
-    void Init(IParametrizedTextTransformer newTransformer, string[] newSource, ITransformerEditSession newEditSession);
+    void Init(IParametrizedTextTransformer newTransformer, string[] newSource, TransformerEditContext newContext);
 
     ITextTransformer Transformer { get; }
 }

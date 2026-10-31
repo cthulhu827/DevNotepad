@@ -12,7 +12,7 @@ public class c_WorkArea : MVC_Controller<m_WorkArea, v_WorkArea>, IKeyHandler
 
     public c_WorkArea()
     {
-        transformersKeyHandler = new TransformersKeyHandler(t => this.Model.AddItem(t));
+        transformersKeyHandler = new TransformersKeyHandler(t => Model.AddItem(t, View.GetSelection()));
     }
 
     protected override void DoConnectModel()
@@ -114,7 +114,7 @@ public class c_WorkArea : MVC_Controller<m_WorkArea, v_WorkArea>, IKeyHandler
         if (transformerId == null) return;
 
         var transformer = Domain.CreateById(transformerId.Value);
-        Model.AddItem(transformer);
+        Model.AddItem(transformer, View.GetSelection());
     }
 
     public void EditPipeControlCaption()

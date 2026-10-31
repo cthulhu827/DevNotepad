@@ -141,7 +141,7 @@ public class c_Page : MVC_Controller<m_Page, v_Page>, IKeyHandler
         if (e is { KeyCode: Keys.N, Control: true })
         {
             var activeWorkArea = workAreas.FirstOrDefault(c => c.View.ContainsFocus);
-            var newModel = activeWorkArea?.ModelNullable?.Copy(e.Shift, e.Alt);
+            var newModel = activeWorkArea?.ModelNullable?.Copy(Model, e.Shift, e.Alt);
             Model.AddWorkArea(newModel);
         }
         else if (e is { KeyCode: Keys.Down, Control: true })

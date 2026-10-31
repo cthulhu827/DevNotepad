@@ -20,8 +20,17 @@ public class m_TPSubstringDlg : m_TPBase<SubstringTransformer, p_TPSubstringDlg>
 
             if (value != SubstringType.BySelection) return;
 
-            var firstLine = source?.FirstOrDefault();
-            if (!string.IsNullOrWhiteSpace(firstLine)) Limit = firstLine;
+            var sel = context?.Selection;
+            if (sel == null)
+            {
+                var firstLine = source?.FirstOrDefault();
+                if (!string.IsNullOrWhiteSpace(firstLine)) Limit = firstLine;
+            }
+            else
+            {
+                Limit = sel.Line;
+                Selection = new(sel.Start, sel.Length);
+            }
         }, p_TPSubstringDlg.TypeChanged);
     }
 

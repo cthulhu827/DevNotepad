@@ -8,10 +8,10 @@ public class c_TPBase<TModel, TView> : ModalDialogController<TModel, TView>, ITP
     where TModel : MVC_Model, ITPDlgModel, new()
     where TView : ModalDialog
 {
-    public bool Edit(IParametrizedTextTransformer transformer, string[] source, ITransformerEditSession editSession)
+    public bool Edit(IParametrizedTextTransformer transformer, string[] source, TransformerEditContext context)
     {
         var model = new TModel();
-        model.Init(transformer, source, editSession);
+        model.Init(transformer, source, context);
         return ShowDialog(model);
     }
 }

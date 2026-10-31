@@ -2,6 +2,7 @@
 using DevNotepad.Dialogs.SavedPagesDlg;
 using DevNotepad.Dialogs.TransformersDlg;
 using DevNotepad.Infrastructure;
+using Framework.AppInfrastructure;
 
 namespace DevNotepad;
 
@@ -26,6 +27,8 @@ public static class UI
     public static readonly Font Font10 = new("Segoe UI", 10);
     public static readonly Font FontMono12 = new("Consolas", 12);
     public static readonly Font FontMono14 = new("Consolas", 14);
+
+    public static IMessageBus MessageBus = IoC.Resolve<IMessageBus>();
 
     public static Guid? AskTransformer()
     {

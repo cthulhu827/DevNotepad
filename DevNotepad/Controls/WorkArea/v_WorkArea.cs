@@ -1,5 +1,6 @@
 ﻿using DevNotepad.Controls.PipeControl;
 using System.ComponentModel;
+using DevNotepad.Dialogs;
 
 namespace DevNotepad.Controls.WorkArea
 {
@@ -21,6 +22,21 @@ namespace DevNotepad.Controls.WorkArea
         private bool Resizable => Dock != DockStyle.Fill;
 
         public bool ManualResized { get; private set; }
+
+        public Selection? GetSelection()
+        {
+            if (txtTransformed.SelectionLength == 0) return null;
+
+            int start = txtTransformed.SelectionStart;
+            int end = start + txtTransformed.SelectionLength;
+            int startLine = txtTransformed.GetLineFromCharIndex(start);
+            int endLine = txtTransformed.GetLineFromCharIndex(end - 1);
+            if (startLine != endLine) return null;
+
+            int firstCharOfLine = txtTransformed.GetFirstCharIndexFromLine(startLine);
+            return new Selection(start - firstCharOfLine, txtTransformed.SelectionLength,
+                txtTransformed.SelectedText, txtTransformed.Lines[startLine]);
+        }
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {

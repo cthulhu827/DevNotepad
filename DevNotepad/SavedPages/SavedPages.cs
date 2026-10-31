@@ -2,7 +2,7 @@
 using DevNotepad.Controls.PipeControl;
 using DevNotepad.Controls.WorkArea;
 using DevNotepad.Core;
-using DevNotepad.Core.TextTransformers;
+using DevNotepad.Core.Lists;
 using DevNotepad.Dialogs.SavedPagesDlg;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -23,9 +23,13 @@ namespace DevNotepad.SavedPages
             var jObject = new JObject();
             jObject.Add(new JProperty(nameof(m_Page.Caption), page.Caption));
 
+            var graph = new StringListGraph(((IStringListsProvider)page).GetAll());
+            var saveOrder = graph.GetAll();
+
             var workAreasArray = new JArray();
-            foreach (var workArea in page.WorkAreas)
+            foreach (var workAreaId in saveOrder)
             {
+                var workArea = page.WorkAreas.Single(wa => wa.Id == workAreaId);
                 workAreasArray.Add(JToken.Parse(workArea.ToJson()));
             }
 
@@ -43,8 +47,7 @@ namespace DevNotepad.SavedPages
             {
                 foreach (var workAreaToken in workAreasArray)
                 {
-                    var workArea = workAreaToken.ToString().ToWorkArea();
-                    result.AddWorkArea(workArea);
+                    workAreaToken.ToString().ToWorkArea(result);
                 }
             }
 
@@ -53,7 +56,11 @@ namespace DevNotepad.SavedPages
 
         private static string ToJson(this m_WorkArea model)
         {
-            var jObject = new JObject { new JProperty(nameof(m_WorkArea.Caption), model.Caption) };
+            var jObject = new JObject
+            {
+                new JProperty(nameof(m_WorkArea.Id), model.Id),
+                new JProperty(nameof(m_WorkArea.Caption), model.Caption)
+            };
 
             var transformersArray = new JArray();
             foreach (var pipeItem in model.Pipe.Items)
@@ -66,18 +73,21 @@ namespace DevNotepad.SavedPages
             return jObject.ToString(Formatting.Indented);
         }
 
-        private static m_WorkArea ToWorkArea(this string json)
+        private static m_WorkArea ToWorkArea(this string json, m_Page page)
         {
             var jObject = JObject.Parse(json);
 
-            var result = new m_WorkArea();
-            result.Caption = jObject[nameof(m_WorkArea.Caption)]?.Value<string>() ?? string.Empty;
+            var id = jObject[nameof(m_WorkArea.Id)]?.ToObject<Guid>();
+            var caption = jObject[nameof(m_WorkArea.Caption)]?.Value<string>() ?? string.Empty;
+            var result = new m_WorkArea(page, id) { Caption = caption };
+
+            page.AddWorkArea(result);
 
             if (jObject[nameof(m_WorkArea.Pipe)] is JArray transformersArray)
             {
                 foreach (var transformerToken in transformersArray)
                 {
-                    var transformer = transformerToken.ToString().ToTransformer();
+                    var transformer = transformerToken.ToString().ToTransformer(page);
                     result.Pipe.AddItem(new VM_PipeItem(transformer));
                 }
 

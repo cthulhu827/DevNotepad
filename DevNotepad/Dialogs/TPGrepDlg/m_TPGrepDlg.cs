@@ -5,6 +5,12 @@ namespace DevNotepad.Dialogs.TPGrepDlg;
 
 public class m_TPGrepDlg : m_TPBase<GrepTransformer, p_TPGrepDlg>
 {
+    public override void Init(IParametrizedTextTransformer newTransformer, string[] newSource, TransformerEditContext newContext)
+    {
+        base.Init(newTransformer, newSource, newContext);
+        if (context?.Selection != null) SearchText = context.Selection.Text;
+    }
+
     public string SearchText
     {
         get => Transformer.SearchText;

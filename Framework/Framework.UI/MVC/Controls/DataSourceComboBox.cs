@@ -1,69 +1,47 @@
 ﻿using Framework.AppInfrastructure;
 using Framework.MVC;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Framework.UI
 {
     public class DataSourceComboBox<T> : ComboBox where T : ViewModel
     {
-        private IDataSource<T> dataSource = DataSourceFactory.CreateNull<T>();
+        private IDataSource<T>? dataSource = DataSourceFactory.CreateNull<T>();
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public new IDataSource<T> DataSource
+        public new IDataSource<T>? DataSource
         {
-            get
-            {
-                return dataSource;
-            }
+            get => dataSource;
             set
             {
-                var domainListener = dataSource as IDomainListener;
-                if (domainListener != null)
+                if (dataSource is IDomainListener domainListener)
                 {
                     domainListener.StopListeningDomain();
                 }
 
                 StopListeningDataSource();
-                ClearUI();
+                ClearUi();
 
-                dataSource = value;
-                if (dataSource == null)
-                {
-                    dataSource = DataSourceFactory.CreateNull<T>();
-                }
+                dataSource = value ?? DataSourceFactory.CreateNull<T>();
 
-                UpdateUI();
+                UpdateUi();
                 StartListeningDataSource();
 
-                domainListener = dataSource as IDomainListener;
-                if (domainListener != null)
+                if (dataSource is IDomainListener domainListener1)
                 {
-                    domainListener.StartListeningDomain();
+                    domainListener1.StartListeningDomain();
                 }
             }
         }
 
-        private ISelection<T> selection = null;
+        private ISelection<T>? selection;
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public ISelection<T> Selection
-        {
-            get
-            {
-                if (selection == null)
-                {
-                    selection = DoInitSelection();
-                }
-                return selection;
-            }
-        }
+        public ISelection<T> Selection => selection ??= DoInitSelection();
 
         protected virtual ISelection<T> DoInitSelection()
         {
@@ -72,7 +50,7 @@ namespace Framework.UI
 
         private void On_NEListChanged(NEListChanged evnt)
         {
-            UpdateUI();
+            UpdateUi();
         }
 
         private void On_NEListChangedContents(NEListChangedContents evnt)
@@ -85,7 +63,7 @@ namespace Framework.UI
 
         private void On_NEListClear(NEListClear evnt)
         {
-            ClearUI();
+            ClearUi();
         }
 
         private void On_NEListItemHighlight(NEListItemHighlight evnt)
@@ -93,38 +71,38 @@ namespace Framework.UI
             switch (evnt.HighlightType)
             {
                 case NEListItemHighlight.HighlightId:
-                    SelectedItem = dataSource.Items.FirstOrDefault(item => item.Id == evnt.Item);
+                    SelectedItem = dataSource?.Items.FirstOrDefault(item => item.Id == evnt.Item);
                     break;
                 case NEListItemHighlight.HighlightIndex:
                     SelectedIndex = evnt.Item;
-                    break;
-                default:
                     break;
             }
         }
 
         private void StartListeningDataSource()
         {
+            if (dataSource == null) return;
+
             dataSource.MessageBus.Sign<NEListChanged>(On_NEListChanged);
             dataSource.MessageBus.Sign<NEListChangedContents>(On_NEListChangedContents);
             dataSource.MessageBus.Sign<NEListClear>(On_NEListClear);
             dataSource.MessageBus.Sign<NEListItemHighlight>(On_NEListItemHighlight);
         }
 
-        private void UpdateUI()
+        private void UpdateUi()
         {
             Items.Clear();
-            Items.AddRange(dataSource.Items.ToArray());
+            if (dataSource != null) Items.AddRange(dataSource.Items.Cast<object>().ToArray());
         }
 
-        private void ClearUI()
+        private void ClearUi()
         {
             Items.Clear();
         }
 
         private void StopListeningDataSource()
         {
-            dataSource.MessageBus.UnsignObject(this);
+            dataSource?.MessageBus.UnsignObject(this);
         }
     }
 }

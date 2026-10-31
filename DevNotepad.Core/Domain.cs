@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using DevNotepad.Core.Lists;
 using DevNotepad.Core.TextTransformers;
 using Framework.AppInfrastructure;
 using Newtonsoft.Json.Linq;
@@ -48,10 +49,10 @@ namespace DevNotepad.Core
                    ?? throw new Exception($"{nameof(ITextTransformer)} with id = {id} not found");
         }
 
-        public static ITextTransformer Copy(this ITextTransformer src)
+        public static ITextTransformer Copy(this ITextTransformer src, IStringListsProvider listsProvider)
         {
             return src is IParametrizedTextTransformer
-                ? src.ToJson().ToTransformer()
+                ? src.ToJson().ToTransformer(listsProvider)
                 : CreateById(src.Id);
         }
 
@@ -62,17 +63,18 @@ namespace DevNotepad.Core
             return jObject.ToString(Formatting.Indented);
         }
 
-        public static ITextTransformer ToTransformer(this string json, ITextTransformer? transformer = null)
+        public static ITextTransformer ToTransformer(this string json, IStringListsProvider listsProvider, ITextTransformer? transformer = null)
         {
             if (transformer == null)
             {
                 var jObject = JObject.Parse(json);
                 var id = jObject[nameof(ITextTransformer.Id)]?.ToObject<Guid>()
-                         ?? throw new JsonException("Missing 'Id' field in JSON.");
+                         ?? throw new JsonException("Missing 'Id' field in transformer JSON.");
                 transformer = CreateById(id);
             }
 
             JsonConvert.PopulateObject(json, transformer);
+            if (transformer is IListDependentTransformer listDependent) listDependent.ResolveLists(listsProvider);
             return transformer;
         }
     }

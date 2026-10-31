@@ -1,9 +1,10 @@
 ﻿using DevNotepad.Controls.WorkArea;
+using DevNotepad.Core.Lists;
 using Framework.MVC;
 
 namespace DevNotepad.Controls.Page;
 
-public class m_Page : MVC_Model
+public class m_Page : MVC_Model, IStringListsProvider
 {
     private readonly EventRaiser<p_Page> eventRaiser;
 
@@ -22,7 +23,7 @@ public class m_Page : MVC_Model
 
     public void AddWorkArea(m_WorkArea? model = null)
     {
-        eventRaiser.Raise(() => workAreas.Add(model ?? new m_WorkArea()), p_Page.WorkAreasListChanged);
+        eventRaiser.Raise(() => workAreas.Add(model ?? new m_WorkArea(this)), p_Page.WorkAreasListChanged);
     }
 
     public void RemoveWorkArea(int idx)
@@ -35,4 +36,13 @@ public class m_Page : MVC_Model
     {
         NotifyChanged(changes.Select(change => (int)change).ToArray());
     }
+
+    #region IStringListsProvider implementation
+
+    IStringList[] IStringListsProvider.GetAll()
+    {
+        return workAreas.Cast<IStringList>().ToArray();
+    }
+
+    #endregion
 }
